@@ -13,7 +13,7 @@ if [ -e /sys/class/power_supply/AC ]; then
 
 	while true
 	do
-	xsetroot -name "$(cat /run/user/${EUID}/dwmstatus) VOL:$(pamixer --get-volume-human) $(date +"%Y/%m/%d/%a/%H:%M:%S")"
+	xsetroot -name "$(cat /run/user/${EUID}/dwmstatus) VOL:$(pamixer --get-volume-human) $(date +"%Y/%m/%d/%a/%I:%M:%S%P")"
 	sleep 0.1
 	done &
 else	
@@ -26,7 +26,7 @@ else
 	
 	while true
 	do
-	xsetroot -name "$(cat /run/user/${EUID}/dwmstatus) VOL:$(pamixer --get-volume-human) $(date +"%Y/%m/%d/%a/%H:%M:%S")"
+	xsetroot -name "$(cat /run/user/${EUID}/dwmstatus) VOL:$(pamixer --get-volume-human) $(date +"%Y/%m/%d/%a/%I:%M:%S%P")"
 	sleep 0.1
 	done &
 fi
