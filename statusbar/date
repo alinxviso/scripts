@@ -1,0 +1,2 @@
+#!/usr/bin/ksh
+date +'%Y/%M/%d/%a/%H:%m:%S'

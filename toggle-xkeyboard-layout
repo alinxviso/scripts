@@ -1,0 +1,12 @@
+#!/usr/bin/ksh
+if [ "$(setxkbmap -print | grep --color=never -o 'dvorak')" = "dvorak" ]; then
+	setxkbmap -layout us -option compose:ralt
+	printf keyboard\ qwerty\\n
+	notify-send "Keyboard layout" "Keyboard layout changed to QWERTY" -h string:x-canonical-private-synchronous:toggle-xkeyboard-layout --expire-time=2000
+	sleep 1
+else
+	setxkbmap -layout us -variant dvorak -option compose:ralt
+	printf keyboard\ dvorak\\n
+	notify-send "Keyboard layout" "Keyboard layout changed to Dvorak" -h string:x-canonical-private-synchronous:toggle-xkeyboard-layout --expire-time=2000
+	sleep 1
+fi

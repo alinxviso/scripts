@@ -1,0 +1,6 @@
+#!/usr/bin/ksh
+if [ "$(cat /sys/class/net/enp0s31f6/operstate)" = "up" ]; then
+	echo "enp0s31f6/$(ifconfig enp0s31f6 | awk -F ' *|:' '/inet/{print $3}' | head -n 1)"
+elif [ "$(cat /sys/class/net/wlan0/operstate)" = "up" ]; then
+	echo "wlan0/$(ifconfig wlan0 | awk -F ' *|:' '/inet/{print $3}' | head -n 1)"
+fi

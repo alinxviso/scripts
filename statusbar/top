@@ -1,0 +1,2 @@
+#!/usr/bin/ksh
+ps ax -o %cpu,rss,comm | sed 1d | grep -v 'idle$' | sort -r -n | head -3 | awk '{printf("%s/%d%%/%.1fGB ",$3,$1,$2/1024/1024)}'

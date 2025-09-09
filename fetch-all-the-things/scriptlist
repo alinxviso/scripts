@@ -1,0 +1,173 @@
+Collections
+
+These are projects that contain a multitude of fetch scripts / programs. Note that, depending on their intended purpose, some of these might have additional files and/or functionality that goes beyond printing information to stdout. It should still be possible to use them for that, however.
+
+    candies C programs made with status bars in mind; most of these have the option to be kept running
+        cpu-proc CPU usage in %
+        datetime date and time
+        disk-statvfs disk usage in %
+        mc-server Minecraft Server Info
+        mem-proc RAM usage in % via /proc/meminfo
+        mem-sysinfo RAM usage in % via sysinfo()
+        temp-sensors system temperature via libsensors
+        twitch-chat Twitch chat messages (filtered)
+        volume-pulse volume via libpulse
+        wmname-xcb title of the focused window and window manager name via libxcb
+    fetchutils small Shell scripts to retrieve system information; made with fetch scripts in mind
+        disk.sh disk usage
+        editor.sh get editor name
+        mem.sh RAM usage
+        os.sh operating system
+        pkgs.sh number of packages
+        res.sh screen dimensions
+        cpu.sh CPU temperature
+        upt.sh uptime
+        wm.sh window manager
+    i3blocks-contrib mostly Shell and Python scripts; made with i3blocks in mind
+        afs AFS directory usage
+        apt-upgrades pending aptitude upgrades
+        aur-update AUR updates
+        backlight screen brightness
+        bandwidth bandwidth information
+        bandwidth2 bandwidth usage (written in C)
+        bandwidth3 bandwidth usage
+        battery-poly battery info
+        battery battery info
+        battery2 battery info
+        batterybar battery level in squares
+        calendar current date and time
+        cpu_usage CPU usage
+        cpu_usage2 CPU usage (written in C)
+        cpu_util_detailed CPU utilization
+        disk_io disk reads/writes
+        disk disk usage
+        docker number of running Docker containers
+        email number of new emails via IMAP
+        essid wifi ESSID
+        go installed Go version
+        gpu-load nVidia GPU load
+        iface network interface status
+        kbdd_layout keyboard layout via dbus and kbdd
+        key_layout keyboard layout via setxkbmap
+        keyindicator capslock / numlock status indicator
+        kubernetes current Kubernetes context and namespace
+        load_average system load average
+        mediaplayer generic media player status
+        memory RAM usage
+        nm-vpn VPN status/name via nmcli
+        openvpn OpenVPN
+        ssid wifi SSID
+        sway-focusedwindow Sway WM focused window title
+        systemd_unit systemd unit status
+        tahoe-lafs tahoe-lafs grid status
+        temperature system temperatures
+        time current time
+        usb USB device info
+        volume-pulseaudio system volume and default playback device
+        volume system volume
+        wifi wifi connection strength
+        wlan-dbm wifi interface link quality in dBm or percent
+        xkb_layout keyboard layout
+    polybar-scripts Shell and Python scripts; written with polybar in mind
+        battery-combined-shell battery status
+        battery-combined-tlp battery status via TLP
+        battery-combined-udev battery status via udev
+        battery-cyberpower battery status for CyberPower UPS devices
+        inbox-imap-pythonpgp shows if there are unread mails in your IMAPs inbox
+        inbox-imap-shellnetrc shows if there are unread mails in your IMAP inbox
+        inbox-imap-shellpass shows if there are unread mails in your IMAP inbox
+        inbox-pop3-shellnetrc shows if there are unread mails in your POP3 inbox
+        info-airqualityindex local World Air Quality Index
+        info-docker number of docker containers in a certain state
+        info-dualshock4 battery level of a DualShock 4 Controller
+        info-ethermine current hashrate (in MH/s) for your ethermine account
+        info-eyestrain eyestrain break indicator according to 20-20-20 rule
+        info-gitlab-pipelines number of succeeded, running and failed gitlab-pipelines triggered by a user
+        info-hackspeed typing speed
+        info-hexdate current date in hex format
+        info-hlwm-workspaces herbstluftwm workspaces
+        info-kernel kernel version
+        info-pingrtt ping result
+        info-projecthamster Hamster Time Tracker information
+        info-redshift-temp current color temperature
+        info-softwarecounter number of specified running software including GUIs and processes
+        info-ssh-sessions count of current ssh sessions as well as the public IP address of the fist session
+        info-taskspooler number of queues/runtimes for one or more task spooler servers
+        info-tmux-sessions tmux sessions
+        info-todotxt shows todo.txt items due
+        info-trash number of files in you trash directory
+        info-usbtoserial shows the USB-to-Serial converters that are connected
+        info-wifionice information about the current ICE train of Deutsche Bahn
+        info-wmname value of the window manager name property of the root window
+        info-xampp status of XAMPP services, if running
+        isrunning-claudius report the state of claudius, the alternative filepicker for Discord
+        isrunning-compton shows if compton is running
+        isrunning-dropbox shows if the dropbox client is running
+        isrunning-offlineimap shows if offlineimap is running
+        isrunning-service shows if a systemd service is running
+        network-ipinfo.io public IP address and country of origin via ipinfo.io
+        network-localip local IP of the current connection
+        network-networkmanager status of NetworkManager
+        network-publicip public IP of the current connection
+        network-traffic current network traffic
+        news-archlinux Arch Linux RSS news
+        notification-chess indicates whether you need to move
+        notification-github GitHub notifications
+        notification-mattermost unread Mattermost messages and mentions
+        notification-reddit shows if there are unread mails in your reddit inbox
+        notification-spacex shows when the next launch is planned
+        openweathermap-detailed weather information
+        openweathermap-forecast weather forecast
+        openweathermap-fullfeatured a lot of weather information
+        openweathermap-simple some weather information
+        player-cmus information about the current track (artist, title, position, duration)
+        player-moc current song
+        player-mpris-simple current track
+        player-mpris-tail current track and the play-pause status
+        player-mpv-tail current music track or movie title from mpv
+        ... and many more (todo)
+
+Invidiual projects
+
+These are projects that contain only one fetch script or program, focusing on a particular piece of information.
+
+    ansiweather Shell script for weather conditions
+    backlight get and set backlight brightness (C)
+    brightnessctl get and set device brightness (C)
+    ewmhstatus print current desktop name and window title (C)
+    light get and set backlights (C)
+    pavolmon PulseAudio volume monitoring (C)
+    playerctl control media players and query current track info (C)
+    xkblayout-state XKB keyboard layout (C++)
+    sres print the current screen resolution (C)
+    xtitle print (active) X window ID or title (C)
+    xtmon X window title monitoring (C)
+    xwinfo print X window information (name, class, ID, size, etc) (C)
+
+Buried in code
+
+These are projects that contain scripts or pieces of code that can collect information, but aren't necessarily available as individual programs. It should still be possible to extract the relevant pieces of code, or at least use them as reference / inspiration.
+
+    slstatus status monitor written in C; individual components in separate C files
+        battery.c battery percentage/state/time left
+        cpu.c CPU usage / frequency
+        datetime.c date and time
+        disk.c disk status (free storage, percentage, total storage and used storage)
+        entropy.c available entropy
+        user.c username/GID/UID
+        hostname.c hostname
+        ip.c IP address (IPv4 and IPv6)
+        kernel_release.c Kernel version
+        keyboard_indicators.c keyboard indicators
+        keymap.c keymap
+        load_avg.c load average
+        netspeeds.c network speeds (RX and TX)
+        num_files.c number of files in a directory
+        ram.c Memory status (free memory, percentage, total memory and used memory)
+        run_command.c custom shell commands
+        swap.c swap status (free swap, percentage, total swap and used swap)
+        temperature.c temperature
+        uptime.c uptime
+        volume.c volume percentage (OSS/ALSA)
+        wifi.c WiFi signal percentage and ESSID
+

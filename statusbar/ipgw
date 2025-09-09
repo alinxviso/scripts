@@ -1,0 +1,9 @@
+#!/usr/bin/ksh
+GW="$(route -n -4 2>/dev/null | awk 'END{print $2}')"
+
+if [ "$GW" = "0.0.0.0" ]; then
+	GW="$(route -n -4 2>/dev/null | head -n 3 | awk 'END{print $2}')"
+	echo $GW
+else
+	echo $GW
+fi

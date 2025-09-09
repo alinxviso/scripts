@@ -1,0 +1,7 @@
+#!/usr/bin/ksh
+FREQ="$(awk '/MHz/{ temp+=$4; n++ } END{ printf("%f\n", temp/n) }' /proc/cpuinfo | awk '{ sub(".[^.]*$", ""); print }')"
+TEMP="$(sensors thinkpad-isa-0000 | awk '/CPU/{print int($2)}')"
+LDAVG="$(cat /proc/loadavg | awk '{print ($2)}')"
+MEM="$(~/.scripts/statusbar/memoryused)"
+
+echo "$FREQ"MHz/"$TEMP"C/"$LDAVG"/"$MEM"

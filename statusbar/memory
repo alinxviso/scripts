@@ -1,0 +1,2 @@
+#!/usr/bin/ksh
+echo "$(free --mega | awk '/^M/{print int($3)}')mb/$(free --mega | awk '/^M/{print int($2)}')"mb
