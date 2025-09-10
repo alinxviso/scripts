@@ -40,7 +40,7 @@ NR="(sh|tail)\ .*dzen2-fifo"
 ME=$$
 # DOS='onstart=raise'
 DOS='onstart=lower'
-DB1='button1=exec:~/.scripts/dzen2-update.sh > ~/.dzen2-fifo'
+DB1='button1=exec:~/.scripts/dzen2-update.sh > /run/user/"$(id -u)"/dzen2-fifo'
 DB2='button2=exec:~/.scripts/xdotool.sh workmenu'
 DB3='button3=exec:~/.scripts/xdotool.sh menu'
 DB4='button4=exec:~/.scripts/xdotool.sh down'
