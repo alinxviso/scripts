@@ -20,7 +20,7 @@ else
 # If it's not, it's a gigabyte pc
 	while true
 	do
-	echo "$(sensors gigabyte_wmi-virtual-0 | awk '/temp4/{print int($2)} ')°C MEM:$(free --mega | awk '/^Mem:/{print int($3)}')mb/$(free --mega | awk '/^Mem:/{print int($2)}')mb" > /run/user/${EUID}/dwmstatus
+	echo "$(sensors gigabyte_wmi-virtual-0 | awk '/temp3/{print int($2)} ')°C MEM:$(free --mega | awk '/^Mem:/{print int($3)}')mb/$(free --mega | awk '/^Mem:/{print int($2)}')mb" > /run/user/${EUID}/dwmstatus
 	sleep 2
 	done &
 	
