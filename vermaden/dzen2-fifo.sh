@@ -76,6 +76,6 @@ done | dzen2 \
       -e "${DOS};${DB1};${DB2};${DB3};${DB4};${DB5}" &
 
 # RUN FITST dzen2(1) UPDATE
-~/.scripts/scripts/dzen2-update.sh > /run/user/"$(id -u)"/dzen2-fifo &
+~/.scripts/vermaden/dzen2-update.sh > /run/user/"$(id -u)"/dzen2-fifo &
 
 #echo '1' >> ~/scripts/stats/$( basename ${0} )
