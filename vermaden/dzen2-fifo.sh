@@ -40,11 +40,11 @@ NR="(sh|tail)\ .*dzen2-fifo"
 ME=$$
 # DOS='onstart=raise'
 DOS='onstart=lower'
-DB1='button1=exec:~/.scripts/dzen2-update.sh > /run/user/"$(id -u)"/dzen2-fifo'
-DB2='button2=exec:~/.scripts/xdotool.sh workmenu'
-DB3='button3=exec:~/.scripts/xdotool.sh menu'
-DB4='button4=exec:~/.scripts/xdotool.sh down'
-DB5='button5=exec:~/.scripts/xdotool.sh up'
+DB1='button1=exec:~/.scripts/vermaden/dzen2-update.sh > /run/user/"$(id -u)"/dzen2-fifo'
+DB2='button2=exec:~/.scripts/vermaden/xdotool.sh workmenu'
+DB3='button3=exec:~/.scripts/vermaden/xdotool.sh menu'
+DB4='button4=exec:~/.scripts/vermaden/xdotool.sh down'
+DB5='button5=exec:~/.scripts/vermaden/xdotool.sh up'
 PS=$( ps axwww -o pid,command )
 
 # KILL ALL ALIVE dzen2(1) PROCESSES
@@ -78,4 +78,4 @@ done | dzen2 \
 # RUN FITST dzen2(1) UPDATE
 ~/.scripts/vermaden/dzen2-update.sh > /run/user/"$(id -u)"/dzen2-fifo &
 
-#echo '1' >> ~/scripts/stats/$( basename ${0} )
+echo '1' >> ~/.scripts/vermaden/stats/$( basename ${0} )
