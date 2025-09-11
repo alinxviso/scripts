@@ -78,9 +78,10 @@ case ${1} in
   (*)           __usage ;;
 esac
 
-LIFE=$( sysctl -n hw.acpi.battery.life )
-case $( sysctl -n hw.acpi.acline ) in
-  (1)
+#LIFE=$( sysctl -n hw.acpi.battery.life )
+#case $( sysctl -n hw.acpi.acline ) in
+case $( cat /sys/class/power_supply/AC/online  ) in
+(1)
     __color_life ${LIFE}
     case ${1} in
       (conky) echo "AC/\${color ${COLOR_LIFE}}${LIFE}%\${color}" ;;
@@ -88,8 +89,9 @@ case $( sysctl -n hw.acpi.acline ) in
     esac
     ;;
   (0)
-    TIME=$( sysctl -n hw.acpi.battery.time )
-    if [ "${TIME}" != "-1" ]
+#    TIME=$( sysctl -n hw.acpi.battery.time )
+	TIME='$( acpi | awk '/Discharging/{print ($5)}' )'
+	if [ "${TIME}" != "-1" ]
     then
       HOUR=$(( ${TIME} / 60 ))
       MINS=$(( ${TIME} % 60 ))
@@ -109,4 +111,4 @@ case $( sysctl -n hw.acpi.acline ) in
     ;;
 esac
 
-echo '1' >> ~/scripts/stats/$( basename ${0} )
+#echo '1' >> ~/scripts/stats/$( basename ${0} )

@@ -1,14 +1,14 @@
 #!/usr/bin/ksh
 
 if [ "$(cat /sys/class/power_supply/BAT1/status)" = "Discharging"  ];then
-	echo "bat1: $(cat /sys/class/power_supply/BAT1/capacity)"
+	echo "bat1:$(cat /sys/class/power_supply/BAT1/capacity)"
 
 elif [ "$(cat /sys/class/power_supply/BAT0/status)" = "Discharging"  ];then
-	echo "bat0: $(cat /sys/class/power_supply/BAT0/capacity)"
+	echo "bat0:$(cat /sys/class/power_supply/BAT0/capacity)"
 
 elif [ "$(cat /sys/class/power_supply/BAT1/status)" = "Charging"  ];then
-	echo "AC/bat1: $(cat /sys/class/power_supply/BAT1/capacity)"
+	echo "AC/bat1:$(cat /sys/class/power_supply/BAT1/capacity)"
 
 elif [ "$(cat /sys/class/power_supply/BAT0/status)" = "Charging"  ];then
-	echo "AC/bat0: $(cat /sys/class_power_supply/BAT0/capacity)"
+	echo "AC/bat0:$(cat /sys/class_power_supply/BAT0/capacity)"
 fi
