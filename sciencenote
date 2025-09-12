@@ -1,2 +1,0 @@
-#!/usr/bin/ksh
-/usr/bin/vim Documents/Science\ Notes/$(date +%A-%B%d-Semester1).txt
