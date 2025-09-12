@@ -1,7 +1,7 @@
 #!/usr/bin/sh
 ## Taken from https://tools.suckless.org/dmenu/scripts/switch
 # Modified to use shebang and centered
-
+# Too see more info about patches needed for dwm, see https://tools.suckless.org/dmenu/scripts
 windows=$(wmctrl -xl | tr -s '[:blank:]' | cut -d ' ' -f 3-3,5- | sed 's/^[a-zA-Z0-9-]*\.//' | sort | uniq)
 
 # Add spaces to align the WM_NAMEs of the windows
