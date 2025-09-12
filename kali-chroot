@@ -1,7 +1,0 @@
-#!/bin/ksh
-doas mount -a
-if [ TERM = "xterm-kitty" ]; then
-doas arch-chroot /chroot kitten run-shell
-else
-doas arch-chroot /chroot 
-fi

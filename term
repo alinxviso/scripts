@@ -1,2 +1,0 @@
-#!/usr/bin/ksh
-alacritty -e "$1"
