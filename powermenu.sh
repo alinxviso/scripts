@@ -12,11 +12,11 @@ function areyousure {
 
 
 
-if [ "$SESSION_TYPE" = "X11" ];
+if [ "$XDG_SESSION_TYPE" = "x11" ] || [ "$SESSION_TYPE" = "X11" ] ;
 then
 function powermenu {
 	options="cancel\nlock\nsleep\nshutdown\nrestart\nexit dwm\nexit openbox"
-	selected=$(echo -e "$options" | dmenu -l 6 -c -p hi)
+	selected=$(echo -e "$options" | dmenu -l 6 -c)
 	if [[ $selected = "shutdown" ]]; then
 #		yes="doas openrc-shutdown -p now"
 		yes="loginctl poweroff"
@@ -44,7 +44,7 @@ powermenu
 
 
 
-elif [ "$SESSION_TYPE" = "Wayland" ]
+elif [ "$XDG_SESSION_TYPE" = "wayland" ] || [ "$SESSION_TYPE" = "Wayland" ] ;
 then
 function powermenu {
 	options="cancel\nlock\nsleep\nshutdown\nrestart\nexit sway"
