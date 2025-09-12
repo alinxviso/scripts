@@ -71,7 +71,7 @@ mkfifo /run/user/"$(id -u)"/dzen2-fifo
 # START dzen2(1) TO UPDATE FIFO
 while true
 do
-  tail -1 /run/user/"$(id -u)"dzen2-fifo
+  tail -1 /run/user/"$(id -u)"/dzen2-fifo
 done | dzen2 \
       -w 3600 \
       -fg "${FG}" \
