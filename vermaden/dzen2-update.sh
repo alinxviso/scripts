@@ -36,45 +36,22 @@ CLA='^fg(#aaaaaa)'
 CVA='^fg(#eeeeee)'
 CDE='^fg(#dd0000)'
 
-# CUSTOM MATH FUNCTION
-__math() {
-  local SCALE=1
-  local RESULT=$( echo "scale=${SCALE}; ${@}" | bc -l )
-  if echo ${RESULT} | grep --color -q '^\.'
-  then
-    echo -n 0
-  fi
-  echo ${RESULT}
-  unset SCALE
-  unset RESULT
-}
-
 # GATHER DATA
 DATE=$(    date +%Y/%m/%d/%a/%H:%M )
-#FREQ=$(    sysctl -n dev.cpu.0.freq )
 FREQ=$(    awk '/MHz/{ temp+=$4; n++ } END{ printf("%f\n", temp/n) }' /proc/cpuinfo | awk '{ sub(".[^.]*$", ""); print }')
-#TEMP=$(    sysctl -n hw.acpi.thermal.tz0.temperature )
 TEMP=$(    sensors thinkpad-isa-0000 | awk '/CPU/{print int($2)}')
-#LOAD=$(    sysctl -n vm.loadavg | awk '{print $2}' )
 LOAD=$(    cat /proc/loadavg | awk '{print ($2)}')
-#MEM=$(( $( sysctl -n vm.stats.vm.v_inactive_count )
-#      + $( sysctl -n vm.stats.vm.v_free_count )
-#      + $( sysctl -n vm.stats.vm.v_cache_count ) ))
-#MEM=$(     __math ${MEM} \* 4 / 1024 / 1024 )
 ## For some reason the MEM variable shows free memory instead of used, so i'll keep that
-MEM=$( free --mega | awk '/Mem/{print int($4)/1024}' )
+## if you want mem used just change $4 to $3 and it should work
+MEM=$(     free --mega | awk '/Mem/{print int($4)/1024}' | cut -c 1-4 )
 
 IF_IP=$(   ~/scripts/__conky_if_ip.sh )
 IF_GW=$(   ~/scripts/__conky_if_gw.sh )
 IF_DNS=$(  ~/scripts/__conky_if_dns.sh )
 IF_PING=$( ~/scripts/__conky_if_ping.sh dzen2 )
-#VOL=$(     mixer -s vol | awk -F ':' '{printf("%s",$2)}' )
-#PCM=$(     mixer -s pcm | awk -F ':' '{printf("%s",$2)}' )
 VOL=$(     pamixer --get-volume )
 FS=$(      zfs list -H -d 0 -o name,avail | awk '{printf("%s/%s ",$1,$2)}' )
 BAT=$(     ~/.scripts/vermaden/__conky_battery.sh dzen2 )
-#PS=$(      ps ax -o %cpu,rss,comm | sed 1d | bsdgrep -v 'idle$' | sort -r -n \
-#             | head -3 | awk '{printf("%s/%d%%/%.1fGB ",$3,$1,$2/1024/1024)}' )
 PS=$(      ps ax -o %cpu,rss,comm | sed 1d | grep -v 'idle$' | sort -r -n | head -3 | awk '{printf("%s/%d%%/%.1fGB ",$3,$1,$2/1024/1024)}' )
 
 # PRESENT DATA
