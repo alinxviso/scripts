@@ -57,10 +57,13 @@ FREQ=$(    awk '/MHz/{ temp+=$4; n++ } END{ printf("%f\n", temp/n) }' /proc/cpui
 TEMP=$(    sensors thinkpad-isa-0000 | awk '/CPU/{print int($2)}')
 #LOAD=$(    sysctl -n vm.loadavg | awk '{print $2}' )
 LOAD=$(    cat /proc/loadavg | awk '{print ($2)}')
-MEM=$(( $( sysctl -n vm.stats.vm.v_inactive_count )
-      + $( sysctl -n vm.stats.vm.v_free_count )
-      + $( sysctl -n vm.stats.vm.v_cache_count ) ))
-MEM=$(     __math ${MEM} \* 4 / 1024 / 1024 )
+#MEM=$(( $( sysctl -n vm.stats.vm.v_inactive_count )
+#      + $( sysctl -n vm.stats.vm.v_free_count )
+#      + $( sysctl -n vm.stats.vm.v_cache_count ) ))
+#MEM=$(     __math ${MEM} \* 4 / 1024 / 1024 )
+## For some reason the MEM variable shows free memory instead of used, so i'll keep that
+MEM=$( free --mega | awk '/Mem/{print int($4)/1024}' )
+
 IF_IP=$(   ~/scripts/__conky_if_ip.sh )
 IF_GW=$(   ~/scripts/__conky_if_gw.sh )
 IF_DNS=$(  ~/scripts/__conky_if_dns.sh )

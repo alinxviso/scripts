@@ -31,12 +31,17 @@
 # vermaden [AT] interia [DOT] pl
 # https://vermaden.wordpress.com
 
+# modified by marxguey@proton.me
+# https://github.com/alinxviso/scripts
+# Original settings kept as comments directly above or below the modified result.
+# Settings removed for compatibility are kept as comments
+
 # SETTINGS
 DELAY=60
 FONT='Ubuntu Mono-10'
 FG='#eeeeee'
 BG='#222222'
-NR="(sh|tail)\ .*dzen2-fifo"
+NR="(sh|tail)\ *dzen2-fifo"
 ME=$$
 # DOS='onstart=raise'
 DOS='onstart=lower'

@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/usr/bin/bash
 
 # Copyright (c) 2018 Slawomir Wojciech Wojtczak (vermaden)
 # All rights reserved.
@@ -79,6 +79,7 @@ case ${1} in
 esac
 
 #LIFE=$( sysctl -n hw.acpi.battery.life )
+LIFE=$( ~/.scripts/statusbar/batterynotitle )
 #case $( sysctl -n hw.acpi.acline ) in
 case $( cat /sys/class/power_supply/AC/online  ) in
 (1)
@@ -90,17 +91,24 @@ case $( cat /sys/class/power_supply/AC/online  ) in
     ;;
   (0)
 #    TIME=$( sysctl -n hw.acpi.battery.time )
-	TIME='$( acpi | awk '/Discharging/{print ($5)}' )'
-	if [ "${TIME}" != "-1" ]
+	DISCHARGING="$( acpi | awk '/Discharging/{print ($3)}' )"
+	if [ "${DISCHARGING}" = "Discharging," ]
     then
-      HOUR=$(( ${TIME} / 60 ))
-      MINS=$(( ${TIME} % 60 ))
-      [ ${MINS} -lt 10 ] && MINS="0${MINS}"
+#      HOUR=$(( ${TIME} / 60 ))
+#      MINS=$(( ${TIME} % 60 ))
+      HOUR=$( acpi | awk '/Discharging/{print ($5)}' | cut -b 1,2 )
+      MINS=$( acpi | awk '/Discharging/{print ($5)}' | cut -b 4,5 )
+## Alternative math, default way the shell interprets the first one errors when minute is 08 for some reason
+#      TIME=$(( ( ${HOUR} * 60 ) + ${MINS} ))
+#      TIME=$(qalc -t ${HOUR}*60 + 08 )
+       TIME=$( echo "($HOUR * 60 ) + $MINS" | bc )
+#      [ ${MINS} -lt 10 ] && MINS="0${MINS}"  This option is if the output of min somehow doesn't 2 digits
     else
       # WE HAVE TO ASSUME SOMETHING SO LETS ASSUME 2:22
-      TIME=142
-      HOUR=2
-      MINS=22
+      # scratch that 420 baby
+      TIME=260
+      HOUR=4
+      MINS=20
     fi
     __color_time ${TIME}
     __color_life ${LIFE}
@@ -111,4 +119,4 @@ case $( cat /sys/class/power_supply/AC/online  ) in
     ;;
 esac
 
-#echo '1' >> ~/scripts/stats/$( basename ${0} )
+echo '1' >> ~/.scripts/vermaden/stats/$( basename ${0} )
