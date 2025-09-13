@@ -49,7 +49,7 @@ case ${1} in
 esac
 
 # WAIT 2 SECONDS WITH -t OPTION
-if ping -c 1 -s 0 -t 2 -q ${URI} 1> /dev/null 2> /dev/null
+if ping -c 1 -s 0 -q ${URI} 1> /dev/null 2> /dev/null
 then
   echo -n OK
 else
@@ -60,4 +60,4 @@ else
   esac
 fi
 
-echo '1' >> ~/scripts/stats/$( basename ${0} )
+echo '1' >> ~/.scripts/vermaden/stats/$( basename ${0} )

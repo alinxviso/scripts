@@ -30,9 +30,10 @@
 # ------------------------------
 # vermaden [AT] interia [DOT] pl
 # https://vermaden.wordpress.com
+# NOT ANYMORE PLEASE EMAIL ME OR PUT A BUG REPORT INSTEAD
 
-GW=$( route -n -4 -v get default 2> /dev/null | awk 'END{print $2}' )
-
+#GW=$( route -n -4 -v get default 2> /dev/null | awk 'END{print $2}' )
+GW=$( route | awk '/default/{print $2}')
 if [ "${GW}" = "0.0.0.0" ]
 then
   GW=-
@@ -40,4 +41,4 @@ fi
 
 echo -n "${GW}"
 
-echo '1' >> ~/scripts/stats/$( basename ${0} )
+echo '1' >> ~/.scripts/vermaden/stats/$( basename ${0} )

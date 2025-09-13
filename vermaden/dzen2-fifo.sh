@@ -72,6 +72,7 @@ mkfifo /run/user/"$(id -u)"/dzen2-fifo
 while true
 do
   tail -1 /run/user/"$(id -u)"/dzen2-fifo
+  sleep 0.1
 done | dzen2 \
       -w 3600 \
       -fg "${FG}" \

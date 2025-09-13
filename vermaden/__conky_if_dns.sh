@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/usr/bin/sh
 
 # Copyright (c) 2018 Slawomir Wojciech Wojtczak (vermaden)
 # All rights reserved.
@@ -24,12 +24,6 @@
 # ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
-# ------------------------------
-# conky(1) FIRST DNS INFORMATION
-# ------------------------------
-# vermaden [AT] interia [DOT] pl
-# https://vermaden.wordpress.com
 
 # ONLY FIRST DNS FROM /etc/resolv.conf FILE
 NS=$( awk '/^nameserver/ {print $2; exit}' /etc/resolv.conf )
@@ -40,4 +34,4 @@ else
   echo -n -
 fi
 
-echo '1' >> ~/scripts/stats/$( basename ${0} )
+echo '1' >> ~/.scripts/vermaden/stats/$( basename ${0} )

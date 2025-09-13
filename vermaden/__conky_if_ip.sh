@@ -43,6 +43,8 @@ WWAN_FAIL=0
 #   WWAN_FAIL=1
 # fi
 
+
+## First is modems, can't test yet
 case $( ifconfig -u | grep -v '127.0.0.1' | grep -c 'inet ' ) in
   (0)
     if [ ${WWAN_FAIL} -ne 1 ]
