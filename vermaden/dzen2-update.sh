@@ -47,11 +47,16 @@ MEM=$(     free --mega | awk '/Mem/{print int($4)/1024}' | cut -c 1-4 )
 
 #IF_IP=$(   ~/scripts/__conky_if_ip.sh )
 IF_IP=$(   echo 127.0.0.1 )
+
 IF_GW=$(   ~/.scripts/vermaden/__conky_if_gw.sh )
 IF_DNS=$(  ~/.scripts/vermaden/__conky_if_dns.sh )
 IF_PING=$( ~/.scripts/vermaden/__conky_if_ping.sh dzen2 )
 VOL=$(     pamixer --get-volume )
-FS=$(      zfs list -H -d 0 -o name,avail | awk '{printf("%s/%s ",$1,$2)}' )
+
+## If you use zfs you can probably just use this but i don't so idk if it works on linux
+#FS=$(      zfs list -H -d 0 -o name,avail | awk '{printf("%s/%s ",$1,$2)}' )
+FS=$(      df -h / | awk 'END{print ($3)}')
+
 BAT=$(     ~/.scripts/vermaden/__conky_battery.sh dzen2 )
 PS=$(      ps ax -o %cpu,rss,comm | sed 1d | grep -v 'idle$' | sort -r -n | head -3 | awk '{printf("%s/%d%%/%.1fGB ",$3,$1,$2/1024/1024)}' )
 

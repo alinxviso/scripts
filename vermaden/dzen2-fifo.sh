@@ -43,8 +43,8 @@ FG='#eeeeee'
 BG='#222222'
 NR="(sh|tail)\ *dzen2-fifo"
 ME=$$
-# DOS='onstart=raise'
-DOS='onstart=lower'
+DOS='onstart=raise'
+#DOS='onstart=lower'
 DB1='button1=exec:~/.scripts/vermaden/dzen2-update.sh > /run/user/"$(id -u)"/dzen2-fifo'
 DB2='button2=exec:~/.scripts/vermaden/xdotool.sh workmenu'
 DB3='button3=exec:~/.scripts/vermaden/xdotool.sh menu'
