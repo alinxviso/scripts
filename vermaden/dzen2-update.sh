@@ -75,4 +75,6 @@ echo -n "${CDE}| ${CLA}bat: ${CVA}${BAT} "
 echo -n "${CDE}| ${CLA}top: ${CVA}${PS}"              # NO SPACE AT THE END
 echo
 
-echo '1' >> ~/.scripts/vermaden/stats/$( basename ${0} )
+rm -f ~/.scripts/vermaden/stats/$( basename ${0} )
+mkfifo ~/.scripts/vermaden/stats/$( basename ${0} )
+echo '1' > ~/.scripts/vermaden/stats/$( basename ${0} )

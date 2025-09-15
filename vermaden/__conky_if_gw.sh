@@ -41,4 +41,6 @@ fi
 
 echo -n "${GW}"
 
-echo '1' >> ~/.scripts/vermaden/stats/$( basename ${0} )
+rm -f ~/scripts/stats/$( basename ${0} )
+mkfifo ~/scripts/stats/$( basename ${0} )
+echo '1' > ~/.scripts/vermaden/stats/$( basename ${0} )
