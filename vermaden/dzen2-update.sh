@@ -50,7 +50,8 @@ IF_IP=$(   echo 127.0.0.1 )
 
 IF_GW=$(   ~/.scripts/vermaden/__conky_if_gw.sh )
 IF_DNS=$(  ~/.scripts/vermaden/__conky_if_dns.sh )
-IF_PING=$( ~/.scripts/vermaden/__conky_if_ping.sh dzen2 )
+#IF_PING=$( ~/.scripts/vermaden/__conky_if_ping.sh dzen2 )
+IF_PING="OK"
 VOL=$(     pamixer --get-volume )
 
 ## If you use zfs you can probably just use this but i don't so idk if it works on linux

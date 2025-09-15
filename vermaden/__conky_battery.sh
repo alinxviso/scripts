@@ -78,9 +78,7 @@ case ${1} in
   (*)           __usage ;;
 esac
 
-#LIFE=$( sysctl -n hw.acpi.battery.life )
 LIFE=$( ~/.scripts/statusbar/batterynotitle )
-#case $( sysctl -n hw.acpi.acline ) in
 case $( cat /sys/class/power_supply/AC/online  ) in
 (1)
     __color_life ${LIFE}
@@ -90,7 +88,6 @@ case $( cat /sys/class/power_supply/AC/online  ) in
     esac
     ;;
   (0)
-#    TIME=$( sysctl -n hw.acpi.battery.time )
 	DISCHARGING="$( acpi | awk '/Discharging/{print ($3)}' )"
 	if [ "${DISCHARGING}" = "Discharging," ]
     then
@@ -100,12 +97,12 @@ case $( cat /sys/class/power_supply/AC/online  ) in
       MINS=$( acpi | awk '/Discharging/{print ($5)}' | cut -b 4,5 )
 ## Alternative math, default way the shell interprets the first one errors when minute is 08 for some reason
 #      TIME=$(( ( ${HOUR} * 60 ) + ${MINS} ))
-#      TIME=$(qalc -t ${HOUR}*60 + 08 )
+#      TIME=$(qalc -t ${HOUR}*60 + ${MINS} )
        TIME=$( echo "($HOUR * 60 ) + $MINS" | bc )
 #      [ ${MINS} -lt 10 ] && MINS="0${MINS}"  This option is if the output of min somehow doesn't 2 digits
     else
-      # WE HAVE TO ASSUME SOMETHING SO LETS ASSUME 2:22
-      # scratch that 420 baby
+	# we still have do put something so the placeholder is 420. time is hour(in minutes) and minutes combined
+	# probably vestigial but i'll keep it because why not
       TIME=260
       HOUR=4
       MINS=20
