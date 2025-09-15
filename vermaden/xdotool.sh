@@ -72,6 +72,6 @@ case ${1} in
 
 esac
 
-rm -f ~/scripts/stats/$( basename ${0} )
-mkfifo ~/scripts/stats/$( basename ${0} )
-echo '1' > ~/scripts/stats/$( basename ${0} )
+rm -f ~/scripts/vermaden/stats/$( basename ${0} )
+mkfifo ~/scripts/vermaden/stats/$( basename ${0} )
+echo '1' > ~/scripts/vermaden/stats/$( basename ${0} )
