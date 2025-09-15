@@ -1,4 +1,4 @@
-#!/usr/bin/sh
+#!/usr/bin/ksh
 ## Taken from https://tools.suckless.org/dmenu/scripts/switch
 # Modified to use shebang and centered
 # Too see more info about patches needed for dwm, see https://tools.suckless.org/dmenu/scripts
@@ -15,6 +15,6 @@ windows=$(echo "$windows" | \
 
 target=$(echo "$windows" | dmenu -c -l 10 -i -p switch: | tr -s '[:blank:]' | cut -d ' ' -f 2-)
 
-if [[ -n $target ]]; then
+if [ -n "$target" ]; then
     wmctrl -a "$target"
 fi
