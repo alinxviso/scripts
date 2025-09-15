@@ -26,7 +26,7 @@ rm -f /run/user/"$(id -u)"/dzen2-fifo
 while true
 do
 	~/.scripts/vermaden/dzen2-update.sh
-	sleep 1
+	sleep .9
 done | dzen2 \
 	-w 3600 \
 	-fg "${FG}" \
