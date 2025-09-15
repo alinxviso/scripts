@@ -84,6 +84,6 @@ done | dzen2 \
 # RUN FITST dzen2(1) UPDATE
 ~/.scripts/vermaden/dzen2-update.sh > /run/user/"$(id -u)"/dzen2-fifo &
 
-rm -f ~/.scripts/vermaden/stats/$( basename ${0} )
-mkfifo ~/.scripts/vermaden/stats/$( basename ${0} )
-echo '1' > ~/.scripts/vermaden/stats/$( basename ${0} )
+#rm -f ~/.scripts/vermaden/stats/$( basename ${0} )
+#mkfifo ~/.scripts/vermaden/stats/$( basename ${0} )
+#echo '1' > ~/.scripts/vermaden/stats/$( basename ${0} )
