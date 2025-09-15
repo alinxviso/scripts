@@ -37,7 +37,7 @@ CVA='^fg(#eeeeee)'
 CDE='^fg(#dd0000)'
 
 # GATHER DATA
-DATE=$(    date +%Y/%m/%d/%a/%H:%M )
+DATE=$(    date +%Y/%m/%d/%a/%I:%M:%S%p )
 FREQ=$(    awk '/MHz/{ temp+=$4; n++ } END{ printf("%f\n", temp/n) }' /proc/cpuinfo | awk '{ sub(".[^.]*$", ""); print }')
 TEMP=$(    sensors thinkpad-isa-0000 | awk '/CPU/{print int($2)}')
 LOAD=$(    cat /proc/loadavg | awk '{print ($2)}')
