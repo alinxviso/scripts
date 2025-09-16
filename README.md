@@ -10,3 +10,7 @@ I daily a t480 with 2 batteries, so a lot of the scripts are made/modified with 
 
 ### To do
 Add ipv6 options to the ip-related vermaden scripts
+
+Fix ip scripts so they aren't just placeholders
+
+Find someway to ping with self-signed ssl cert for pinging at school
