@@ -33,7 +33,7 @@
 # NOT ANYMORE PLEASE EMAIL ME OR PUT A BUG REPORT INSTEAD
 
 #GW=$( route -n -4 -v get default 2> /dev/null | awk 'END{print $2}' )
-GW=$( route | awk '/default/{print $2}')
+GW=$( route | awk '/default/{print $3}' | head -n 1)
 if [ "${GW}" = "0.0.0.0" ]
 then
   GW=-
