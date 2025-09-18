@@ -46,7 +46,7 @@ LOAD=$(    cat /proc/loadavg | awk '{print ($2)}')
 MEM=$(     free --mega | awk '/Mem/{print int($3)/1024}' | cut -c 1-4 )
 
 #IF_IP=$(   ~/scripts/__conky_if_ip.sh )
-IF_IP=$(   echo 192.168.1.117 )
+IF_IP=$(   echo "192.168.1.117 ")
 
 IF_GW=$(   ~/.scripts/vermaden/__conky_if_gw.sh )
 IF_DNS=$(  ~/.scripts/vermaden/__conky_if_dns.sh )
