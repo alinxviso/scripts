@@ -9,5 +9,5 @@ elif [ "$(cat /sys/class/power_supply/BAT1/status)" = "Charging"  ];then
 	cat /sys/class/power_supply/BAT1/capacity
 
 elif [ "$(cat /sys/class/power_supply/BAT0/status)" = "Charging"  ];then
-	cat /sys/class_power_supply/BAT0/capacity
+	cat /sys/class/power_supply/BAT0/capacity
 fi
