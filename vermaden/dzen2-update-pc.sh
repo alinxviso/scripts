@@ -70,7 +70,7 @@ echo -n "${CDE}| ${CLA}dns: ${CVA}${IF_DNS} "
 echo -n "${CDE}| ${CLA}ping: ${CVA}${IF_PING} "
 #echo -n "${CDE}| ${CLA}vol/pcm: ${CVA}${VOL}/${PCM} "
 echo -n "${CDE}| ${CLA}vol: ${CVA}${VOL}/100 "
-echo -n "${CDE}| ${CLA}fs: ${CVA}${FS}"               # NO SPACE AT THE END
+echo -n "${CDE}| ${CLA}fs: ${CVA}${FS} "
 echo -n "${CDE}| ${CLA}power: ${CVA}${BAT} "
 echo -n "${CDE}| ${CLA}top: ${CVA}${PS}"              # NO SPACE AT THE END
 echo
