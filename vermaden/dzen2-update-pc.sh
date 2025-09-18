@@ -41,9 +41,9 @@ DATE=$(    date +%Y/%m/%d/%a/%I:%M:%S%p )
 FREQ=$(    awk '/MHz/{ temp+=$4; n++ } END{ printf("%f\n", temp/n) }' /proc/cpuinfo | awk '{ sub(".[^.]*$", ""); print }')
 TEMP=$(    sensors k10temp-pci-00c3 | awk '/Tctl/{print int($2)}')
 LOAD=$(    cat /proc/loadavg | awk '{print ($2)}')
-## For some reason the MEM variable shows free memory instead of used, so i'll keep that
-## if you want mem used just change $4 to $3 and it should work
-MEM=$(     free --mega | awk '/Mem/{print int($4)/1024}' | cut -c 1-4 )
+## For some reason the original MEM variable shows free memory instead of used, so
+#  if you want mem free just change $3 to $4 and it should work
+MEM=$(     free --mega | awk '/Mem/{print int($3)/1024}' | cut -c 1-4 )
 
 #IF_IP=$(   ~/scripts/__conky_if_ip.sh )
 IF_IP=$(   echo 192.168.1.117 )
