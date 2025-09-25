@@ -9,7 +9,7 @@
 	if [ "$(cat /sys/class/power_supply/BAT1/status)" = "Discharging"  ];then
 		echo "bat1:$(cat /sys/class/power_supply/BAT1/capacity)"
 
-	elif [ "$(cat /sys/class/power_supply/BA01/status)" = "Discharging"  ];then
+	elif [ "$(cat /sys/class/power_supply/BAT0/status)" = "Discharging"  ];then
 		echo "bat0:$(cat /sys/class/power_supply/BAT0/capacity)"
 
 	elif [ "$(cat /sys/class/power_supply/BAT1/status)" = "Charging"  ];then
