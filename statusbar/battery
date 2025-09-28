@@ -4,18 +4,33 @@
 #  just get rid of them later
 
 
-#if [ -e "/sys/class/power_supply/BAT1"  ]; then
+bat0stat=$(cat /sys/class/power_supply/BAT0/status)
+bat1stat=$(cat /sys/class/power_supply/BAT1/status)
 
-	if [ "$(cat /sys/class/power_supply/BAT1/status)" = "Discharging"  ];then
+if [ -e "/sys/class/power_supply/BAT1"  ]; then
+
+	if [ "$bat1stat" = "Discharging"  ];then
 		echo "bat1:$(cat /sys/class/power_supply/BAT1/capacity)"
 
-	elif [ "$(cat /sys/class/power_supply/BAT0/status)" = "Discharging"  ];then
+	elif [ "$bat0stat" = "Discharging"  ];then
 		echo "bat0:$(cat /sys/class/power_supply/BAT0/capacity)"
 
-	elif [ "$(cat /sys/class/power_supply/BAT1/status)" = "Charging"  ];then
+	elif [ "$bat1stat" = "Charging"  ];then
 		echo "AC/bat1:$(cat /sys/class/power_supply/BAT1/capacity)"
 
-	elif [ "$(cat /sys/class/power_supply/BAT0/status)" = "Charging"  ];then
+	elif [ "$bat0stat" = "Charging"  ];then
 		echo "AC/bat0:$(cat /sys/class/power_supply/BAT0/capacity)"
+	
+	elif { [ "$bat1stat" = "Not charging" ] || [ "$bat1stat"  =  "Full" ]; } && { [ "$bat0stat" = "Not Charging" ] || [ "$bat0stat" = "Full" ]; } ;then
+		echo "AC/bat:full"
 	fi
-#fi
+elif [ "$(cat /sys/class/power_supply/BAT0/status)" = "Discharging"  ];then
+	echo "bat0:$(cat /sys/class/power_supply/BAT0/capacity)"
+
+elif [ "$(cat /sys/class/power_supply/BAT0/status)" = "Charging"  ];then
+	echo "AC/bat0:$(cat /sys/class/power_supply/BAT0/capacity)"
+	
+elif [ "$(cat /sys/class/power_supply/BAT0/status)" = "Not charging" ];then
+	echo "AC/bat:full"
+fi
+
