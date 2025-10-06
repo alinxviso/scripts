@@ -12,22 +12,22 @@ function areyousure {
 
 
 
-if [ "$XDG_SESSION_TYPE" = "x11" ] || [ "$SESSION_TYPE" = "X11" ] ;
+if [ "$XDG_SESSION_TYPE" = "x11" ] || [ "$SESSION_TYPE" = "x11" ] ;
 then
 function powermenu {
 	options="cancel\nlock\nsleep\nshutdown\nrestart\nexit dwm\nexit openbox"
 	selected=$(echo -e "$options" | dmenu -l 6 -c)
 	if [[ $selected = "shutdown" ]]; then
-#		yes="doas openrc-shutdown -p now"
-		yes="loginctl poweroff"
+#		yes="loginctl poweroff"
+		yes="systemctl poweroff"
 		areyousure
 	elif [[ $selected = "restart" ]]; then
-#		yes="doas openrc-shutdown -r now"
-		yes="loginctl reboot"
+#		yes="loginctl reboot"
+		yes="systemctl reboot"
 		areyousure
 	elif [[ $selected = "sleep" ]]; then
-#		loginctl lock-session && sleep 1;doas s2ram
-		loginctl suspend
+#		loginctl suspend
+		systemctl suspend
 	elif [[ $selected = "lock" ]]; then
 		loginctl lock-session
 	elif [[ $selected = "cancel" ]]; then
@@ -69,5 +69,8 @@ function powermenu {
 }
 powermenu
 
+else; 
+notify-send "did nothing show up?" "make sure XDG_SESSION_TYPE or SESSION_TYPE are set to 'x11' or 'wayland'"
+echo "did nothing show up? make sure XDG_SESSION_TYPE or SESSION_TYPE are set to 'x11' or 'wayland'"
 
-fi
+fi && exit

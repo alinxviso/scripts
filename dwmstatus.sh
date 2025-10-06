@@ -1,6 +1,6 @@
 #!/usr/bin/ksh
 
-# As to not run "id -u" every 0.1 seconds
+# As to not type 'id -u' a million times
 EUID=$(id -u)
 
 # Checks if the device is a laptop
