@@ -1,76 +1,54 @@
 #!/usr/bin/ksh
+# See comments at bottom for configuration
+
+if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+	runner="mew -i -l 6"
+elif [ "$XDG_SESSION_TYPE" = "x11" ]; then
+	runner="dmenu -l 6 -c" 
+fi
+
+if [ -z "$currentwm" ];then
+	currentwm="$XDG_CURRENT_DESKTOP"
+fi
+
+sleepcmd="systemctl suspend"
+rebootcmd="systemctl reboot"
+poweroffcmd="systemctl poweroff"
+lockcmd="loginctl lock-session"
+no="exit"
+
 function areyousure {
 	options="no\nyes"
-	yesno=$(echo -e "$options" | dmenu -l 6 -c -p 'Are you sure?')
-	if [[ $yesno = "yes" ]]; then
-		$yes
-	elif [[ $yesno = "no" ]]; then
-		exit
+	yesno=$(echo -e "$options" | $runner -p 'Are you sure?')
+	if [[ $yesno = "yes" ]]; then $yes
+	elif [[ $yesno = "no" ]]; then $no
 	fi
 }
 
-
-
-
-if [ "$XDG_SESSION_TYPE" = "x11" ] || [ "$SESSION_TYPE" = "x11" ] ;
-then
 function powermenu {
 	options="cancel\nlock\nsleep\nshutdown\nrestart\nexit dwm\nexit openbox"
-	selected=$(echo -e "$options" | dmenu -l 6 -c)
+	selected=$(echo -e "$options" | $runner)
 	if [[ $selected = "shutdown" ]]; then
-#		yes="loginctl poweroff"
-		yes="systemctl poweroff"
+		yes="$poweroffcmd"
 		areyousure
 	elif [[ $selected = "restart" ]]; then
-#		yes="loginctl reboot"
-		yes="systemctl reboot"
+		yes="$rebootcmd"
 		areyousure
 	elif [[ $selected = "sleep" ]]; then
-#		loginctl suspend
-		systemctl suspend
+		$sleepcmd
+
 	elif [[ $selected = "lock" ]]; then
-		loginctl lock-session
+		$lockcmd
+
 	elif [[ $selected = "cancel" ]]; then
 		return
-	elif [[ $selected = "exit dwm" ]]; then
-		pkill dwm && pkill xinit
-	elif [[ $selected = "exit openbox" ]]; then
-		openbox --exit
+
+	elif [[ $selected = "exit $currentwm" ]]; then
+		$exitcurrentdwm
 	fi
 }
 powermenu
 
-
-
-
-
-elif [ "$XDG_SESSION_TYPE" = "wayland" ] || [ "$SESSION_TYPE" = "Wayland" ] ;
-then
-function powermenu {
-	options="cancel\nlock\nsleep\nshutdown\nrestart\nexit sway"
-	selected=$(echo -e "$options" | dmenu -l 6 -c)
-	if [[ $selected = "shutdown" ]]; then
-#		yes="doas openrc-shutdown -p now"
-		yes="loginctl poweroff"
-		areyousure
-	elif [[ $selected = "restart" ]]; then
-#		yes="doas openrc-shutdown -r now"
-		yes="loginctl reboot"
-		areyousure
-	elif [[ $selected = "sleep" ]]; then
-		swaylock & sleep 1;doas s2ram
-	elif [[ $selected = "lock" ]]; then
-		swaylock
-	elif [[ $selected = "cancel" ]]; then
-		return
-	elif [[ $selected = "exit sway" ]]; then
-		swaymsg kill
-	fi
-}
-powermenu
-
-else; 
 notify-send "did nothing show up?" "make sure XDG_SESSION_TYPE or SESSION_TYPE are set to 'x11' or 'wayland'"
 echo "did nothing show up? make sure XDG_SESSION_TYPE or SESSION_TYPE are set to 'x11' or 'wayland'"
 
-fi && exit
