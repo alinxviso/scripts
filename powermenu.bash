@@ -1,5 +1,6 @@
-#!/usr/bin/ksh
+#!/usr/bin/bash
 # See comments at bottom for configuration
+
 
 if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
 	runner="mew -i -l 6"
@@ -10,6 +11,8 @@ fi
 if [ -z "$currentwm" ];then
 	currentwm="$XDG_CURRENT_DESKTOP"
 fi
+currentwm=${currentwm,,}
+source $HOME/.scripts/powermenu-sessions.bash
 
 sleepcmd="systemctl suspend"
 rebootcmd="systemctl reboot"
@@ -26,7 +29,7 @@ function areyousure {
 }
 
 function powermenu {
-	options="cancel\nlock\nsleep\nshutdown\nrestart\nexit dwm\nexit openbox"
+	options="cancel\nlock\nsleep\nshutdown\nrestart\nexit $currentwm"
 	selected=$(echo -e "$options" | $runner)
 	if [[ $selected = "shutdown" ]]; then
 		yes="$poweroffcmd"
@@ -44,11 +47,10 @@ function powermenu {
 		return
 
 	elif [[ $selected = "exit $currentwm" ]]; then
-		$exitcurrentdwm
+		$exitcurrentwm
 	fi
 }
-powermenu
+powermenu && exit
 
-notify-send "did nothing show up?" "make sure XDG_SESSION_TYPE or SESSION_TYPE are set to 'x11' or 'wayland'"
-echo "did nothing show up? make sure XDG_SESSION_TYPE or SESSION_TYPE are set to 'x11' or 'wayland'"
+notify-send "did nothing show up?" "make sure XDG_SESSION_TYPE is set to either 'x11' or 'wayland', or that dmenu has the center patch applied. see script for more details" || echo "did nothing show up? make sure XDG_SESSION_TYPE is set to either 'x11' or 'wayland', or that dmenu has the center patch applied. see script for more details"
 
