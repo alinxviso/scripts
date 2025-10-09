@@ -1,0 +1,5 @@
+brightnesscmd="qdbus6 org.kde.org_kde_powerdevil /org/kde/Solid/PowerManagement/Actions/BrightnessControl"
+currentbrightnesscmd="$brightnesscmd brightness"
+setbrightnesscmd="$brightnesscmd setBrightness"
+raisebrightnesscmd="$setbrightnesscmd $(qalc -t $($currentbrightnesscmd) + $2)"
+lowerbrightnesscmd="$setbrightnesscmd $(qalc -t $($currentbrightnesscmd) - $2)"
