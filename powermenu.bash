@@ -3,9 +3,9 @@
 
 
 if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
-	runner="mew -i -l 6"
+	runner="mew -i -l 7"
 elif [ "$XDG_SESSION_TYPE" = "x11" ]; then
-	runner="dmenu -l 6 -c" 
+	runner="dmenu -l 7 -c" 
 fi
 
 if [ -z "$currentwm" ];then
@@ -14,10 +14,11 @@ fi
 currentwm=${currentwm,,}
 source $HOME/.scripts/powermenu-sessions.bash
 
+lockcmd="loginctl lock-session"
 sleepcmd="systemctl suspend"
+hibernatecmd="systemctl hibernate"
 rebootcmd="systemctl reboot"
 poweroffcmd="systemctl poweroff"
-lockcmd="loginctl lock-session"
 no="exit"
 
 function areyousure {
@@ -29,28 +30,54 @@ function areyousure {
 }
 
 function powermenu {
-	options="cancel\nlock\nsleep\nshutdown\nrestart\nexit $currentwm"
+	if [[ $hibernate = "true" ]]; then
+		options="cancel\nlock\nsleep\nhibernate\nrestart\nshutdown\nexit $currentwm"
+	else
+		options="cancel\nlock\nsleep\nrestart\nrshutdown\nexit $currentwm"
+	fi
 	selected=$(echo -e "$options" | $runner)
-	if [[ $selected = "shutdown" ]]; then
-		yes="$poweroffcmd"
-		areyousure
-	elif [[ $selected = "restart" ]]; then
-		yes="$rebootcmd"
-		areyousure
-	elif [[ $selected = "sleep" ]]; then
-		$sleepcmd
+	if [[ $selected = "cancel" ]]; then
+		return
 
 	elif [[ $selected = "lock" ]]; then
 		$lockcmd
 
-	elif [[ $selected = "cancel" ]]; then
-		return
+	elif [[ $selected = "sleep" ]]; then
+		$sleepcmd
+
+	elif [[ $selected = "hibernate" ]]; then
+		$hibernatecmd
+
+	elif [[ $selected = "restart" ]]; then
+		yes="$rebootcmd"
+		areyousure
+
+	elif [[ $selected = "shutdown" ]]; then
+		yes="$poweroffcmd"
+		areyousure
 
 	elif [[ $selected = "exit $currentwm" ]]; then
 		$exitcurrentwm
+
 	fi
 }
 powermenu && exit
 
 notify-send "did nothing show up?" "make sure XDG_SESSION_TYPE is set to either 'x11' or 'wayland', or that dmenu has the center patch applied. see script for more details" || echo "did nothing show up? make sure XDG_SESSION_TYPE is set to either 'x11' or 'wayland', or that dmenu has the center patch applied. see script for more details"
+
+
+#################################################################################################################################################################################################################################################################################
+#                                                                                                                                 CONFIGURATION                                                                                                                                 #
+#################################################################################################################################################################################################################################################################################
+
+# Every variable can be changed in the "powermenu-settings.bash" file, all well as the session commands, which lets you set defaults or create new sessions.
+
+
+
+
+#################################################################################################################################################################################################################################################################################
+#                                                                                                                                   SESSIONS                                                                                                                                   #
+#################################################################################################################################################################################################################################################################################
+
+# Sessions let you 
 

@@ -7,7 +7,7 @@ EUID=$(id -u)
 if [ -e /sys/class/power_supply/AC ]; then
 	while true
 	do
-	echo "$(sensors thinkpad-isa-0000 | awk '/CPU/{print int($2)} ')°C MEM:$(free --mega | awk '/^Mem:/{print int($3)}')mb/$(free --mega | awk '/^Mem:/{print int($2)}')mb" $(~/.scripts/statusbar/battery) > /run/user/${EUID}/dwmstatus
+	echo "$(sensors coretemp-isa-0000 | awk '/P/{print int($4)} ')°C MEM:$(free --mega | awk '/^Mem:/{print int($3)}')mb/$(free --mega | awk '/^Mem:/{print int($2)}')mb" $(~/.scripts/statusbar/battery) > /run/user/${EUID}/dwmstatus
 	sleep 2
 	done &
 
