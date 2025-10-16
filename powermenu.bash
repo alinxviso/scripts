@@ -11,15 +11,19 @@ fi
 if [ -z "$currentwm" ];then
 	currentwm="$XDG_CURRENT_DESKTOP"
 fi
-currentwm=${currentwm,,}
-source $HOME/.scripts/powermenu-sessions.bash
 
 lockcmd="loginctl lock-session"
-sleepcmd="systemctl suspend"
+if [ -e /sys/power/resume ];then
+sleepcmd="systemctl suspend-then-hibernate"
 hibernatecmd="systemctl hibernate"
+else
+sleepcmd="systemctl suspend"
+fi
 rebootcmd="systemctl reboot"
 poweroffcmd="systemctl poweroff"
 no="exit"
+source $HOME/.scripts/powermenu-sessions.bash
+currentwm=${currentwm,,}
 
 function areyousure {
 	options="no\nyes"
@@ -79,5 +83,6 @@ notify-send "did nothing show up?" "make sure XDG_SESSION_TYPE is set to either 
 #                                                                                                                                   SESSIONS                                                                                                                                   #
 #################################################################################################################################################################################################################################################################################
 
-# Sessions let you 
+# Sessions let you change every command or variable for a specific session, or add a new one.   If you have a WM or DE that isn't in the defaults, you can easily add your own or modify an existing one
+#
 
