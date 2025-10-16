@@ -1,5 +1,7 @@
 ## Personal/extra things I don't want/need synced
-vermaden/stats/*
-laptop
-nbsd
+/vermaden/stats/*
+/laptop
+/nbsd
 .*.swp
+/desktopchange.log
+
