@@ -4,4 +4,4 @@ TEMP="$(sensors thinkpad-isa-0000 | awk '/CPU/{print int($2)}')"
 LDAVG="$(cat /proc/loadavg | awk '{print ($2)}')"
 MEM="$(~/.scripts/statusbar/memoryused)"
 
-echo "$FREQ"MHz/"$TEMP"C/"$LDAVG"/"$MEM"
+echo "$FREQ"MHz/"$TEMP"°C/"$LDAVG"/"$MEM"
