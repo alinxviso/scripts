@@ -3,7 +3,7 @@
 
 
 if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
-	runner="bemenu -c -l 7 -W.25 -p |" 
+	runner="bemenu -P > -i -c -l 7 -W.25 -p |" 
 elif [ "$XDG_SESSION_TYPE" = "x11" ]; then
 	runner="dmenu -l 7 -c" 
 fi
