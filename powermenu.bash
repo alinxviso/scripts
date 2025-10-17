@@ -3,7 +3,7 @@
 
 
 if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
-	runner="mew -i -l 7"
+	runner="bemenu -c -l 7 -W.25 -p |" 
 elif [ "$XDG_SESSION_TYPE" = "x11" ]; then
 	runner="dmenu -l 7 -c" 
 fi
@@ -37,7 +37,7 @@ function powermenu {
 	if [[ $hibernate = "true" ]]; then
 		options="cancel\nlock\nsleep\nhibernate\nrestart\nshutdown\nexit $currentwm"
 	else
-		options="cancel\nlock\nsleep\nrestart\nrshutdown\nexit $currentwm"
+		options="cancel\nlock\nsleep\nrestart\nshutdown\nexit $currentwm"
 	fi
 	selected=$(echo -e "$options" | $runner)
 	if [[ $selected = "cancel" ]]; then
@@ -67,7 +67,7 @@ function powermenu {
 }
 powermenu && exit
 
-notify-send "did nothing show up?" "make sure XDG_SESSION_TYPE is set to either 'x11' or 'wayland', or that dmenu has the center patch applied. see script for more details" || echo "did nothing show up? make sure XDG_SESSION_TYPE is set to either 'x11' or 'wayland', or that dmenu has the center patch applied. see script for more details"
+notify-send "did nothing show up?" "make sure XDG_SESSION_TYPE is set to either 'x11' or 'wayland', or that dmenu has the center patch applied. see script for more details" || echo "did nothing show up? make sure XDG_SESSION_TYPE is set to either 'x11' or 'wayland', or that dmenu has the center patch applied. see script for more details. By default the script uses bemenu for wayland and dmenu for x11"
 
 
 #################################################################################################################################################################################################################################################################################
