@@ -2,9 +2,9 @@
 # See comments at bottom for configuration
 
 
-if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+if [ "$XDG_SESSION_TYPE" = "wayland" ] && [ -z "$runner"] ; then
 	runner="bemenu -P > -i -c -l 7 -W.25 -p |" 
-elif [ "$XDG_SESSION_TYPE" = "x11" ]; then
+elif [ "$XDG_SESSION_TYPE" = "x11" ] && [ -z "$runner" ] ; then
 	runner="dmenu -l 7 -c" 
 fi
 
