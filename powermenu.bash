@@ -1,9 +1,8 @@
 #!/usr/bin/bash
 # See comments at bottom for configuration
 
-
 if [ "$XDG_SESSION_TYPE" = "wayland" ] && [ -z "$runner"] ; then
-	runner="bemenu -P > -i -c -l 7 -W.25 -p |" 
+	runner="bemenu -i -c -l 7 -W.25 -p /"
 elif [ "$XDG_SESSION_TYPE" = "x11" ] && [ -z "$runner" ] ; then
 	runner="dmenu -l 7 -c" 
 fi
