@@ -21,7 +21,7 @@ if [ -e "/sys/class/power_supply/BAT1"  ]; then
 	elif [ "$bat0stat" = "Charging"  ];then
 		echo "AC/bat0:$(cat /sys/class/power_supply/BAT0/capacity)"
 	
-	elif { [ "$bat1stat" = "Not charging" ] || [ "$bat1stat"  =  "Full" ]; } && { [ "$bat0stat" = "Not Charging" ] || [ "$bat0stat" = "Full" ]; } ;then
+	elif { [ "$bat1stat" = "Not charging" ] || [ "$bat1stat"  =  "Full" ]; } && { [ "$bat0stat" = "Not charging" ] || [ "$bat0stat" = "Full" ]; } ;then
 		echo "AC/bat:full"
 	fi
 elif [ "$(cat /sys/class/power_supply/BAT0/status)" = "Discharging"  ];then
