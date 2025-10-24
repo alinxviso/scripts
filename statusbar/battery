@@ -1,4 +1,4 @@
-#!/usr/bin/ksh
+!/usr/bin/ksh
 
 ## honestly idk if all of these checks for bat1 are redundant since my system works without them so i might 
 #  just get rid of them later
@@ -31,6 +31,6 @@ elif [ "$(cat /sys/class/power_supply/BAT0/status)" = "Charging"  ];then
 	echo "AC/bat0:$(cat /sys/class/power_supply/BAT0/capacity)"
 	
 elif [ "$(cat /sys/class/power_supply/BAT0/status)" = "Not charging" ];then
-	echo "AC/bat:full"
+	echo "AC/bat0:full"
 fi
 

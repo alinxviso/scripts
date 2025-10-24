@@ -1,13 +1,36 @@
 #!/usr/bin/ksh
-if [ "$(cat /sys/class/power_supply/BAT1/status)" = "Discharging"  ];then
-	cat /sys/class/power_supply/BAT1/capacity
 
+## honestly idk if all of these checks for bat1 are redundant since my system works without them so i might 
+#  just get rid of them later
+
+
+bat0stat=$(cat /sys/class/power_supply/BAT0/status)
+bat1stat=$(cat /sys/class/power_supply/BAT1/status)
+
+if [ -e "/sys/class/power_supply/BAT1"  ]; then
+
+	if [ "$bat1stat" = "Discharging"  ];then
+		cat /sys/class/power_supply/BAT1/capacity
+
+	elif [ "$bat0stat" = "Discharging"  ];then
+		cat /sys/class/power_supply/BAT0/capacity
+
+	elif [ "$bat1stat" = "Charging"  ];then
+		cat /sys/class/power_supply/BAT1/capacity
+
+	elif [ "$bat0stat" = "Charging"  ];then
+		cat /sys/class/power_supply/BAT0/capacity
+	
+	elif { [ "$bat1stat" = "Not charging" ] || [ "$bat1stat"  =  "Full" ]; } && { [ "$bat0stat" = "Not charging" ] || [ "$bat0stat" = "Full" ]; } ;then
+		echo "full"
+	fi
 elif [ "$(cat /sys/class/power_supply/BAT0/status)" = "Discharging"  ];then
 	cat /sys/class/power_supply/BAT0/capacity
 
-elif [ "$(cat /sys/class/power_supply/BAT1/status)" = "Charging"  ];then
-	cat /sys/class/power_supply/BAT1/capacity
-
 elif [ "$(cat /sys/class/power_supply/BAT0/status)" = "Charging"  ];then
 	cat /sys/class/power_supply/BAT0/capacity
+
+elif [ "$(cat /sys/class/power_supply/BAT0/status)" = "Not charging" ];then
+	echo "full"
 fi
+
