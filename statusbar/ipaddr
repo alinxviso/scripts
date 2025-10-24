@@ -1,31 +1,21 @@
 #!/usr/bin/env sh
 
 if [ -e /sbin/ip ]; then
-
-	if [ -z "$__dev" ]; then
-	
-		__path="/sys/class/net"
-		if [ "$(cat $__path/virt0/operstate)" = "up" ]; then
-			__dev="virt0"
-		
-		elif [ "$(cat $__path/proton0/operstate)" = "up" ]; then
-			__dev="proton0"
-		
-		elif [ "$(cat $__path/enp0s31f6/operstate)" = "up" ]; then
-			__dev="enp0s31f6"
-		
-		elif [ "$(cat $__path/eth0/operstate)" = "up" ]; then
-			__dev="eth0"
-		
-		elif [ "$(cat $__path/net/wlan0/operstate)" = "up" ]; then
-			__dev="wlan0"
-		
-		elif [ "$(cat $__path/wlp3s0/operstate)" = "up" ]; then
-			__dev="wlp3s0"
-		fi
-	fi
+	break
 else
-	echo 'command ifconfig not found, please install net-tools or a package that provides ifconfig'
+	echo 'command ip not found, please install iproute2 or a package that provides ip'
+	echo 'if the ifconfig binary is installed, use ipaddr-ifconfig instead'
+	exit
+fi
+
+if [ -z "$__dev" ]; then
+	__devices="virt0 proton0 eth0 enp0s31f6 wlan0 wlp3s0"
+	for __tested in $__devices; do
+		if [ "$(cat /sys/class/net/$__tested/operstate)" = "up" ]; then
+			__dev=$__tested	
+			break
+		fi
+	done
 fi 2> /dev/null
 
 echo "$__dev/$(ip -4 ad show "$__dev" | awk -F ' *|:' '/inet/{sub(/\/.*/,"",$3);print $3}' | head -n 1)"
