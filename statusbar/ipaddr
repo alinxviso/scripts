@@ -1,24 +1,31 @@
-#!/usr/bin/ksh
+#!/usr/bin/env sh
 
-if [ -e /sbin/ifconfig ]; then
+if [ -e /sbin/ip ]; then
 
-__path="/sys/class/net"
-if [ "$(cat $__path/virt0/operstate)" = "up" ]; then
-	echo "virt0/$(ifconfig virt0 | awk -F ' *|:' '/inet/{print $3}' | head -n 1)"
-
-elif [ "$(cat $__path/enp0s31f60/operstate)" = "up" ]; then
-	echo "enp0s31f6/$(ifconfig enp0s31f6 | awk -F ' *|:' '/inet/{print $3}' | head -n 1)"
-
-elif [ "$(cat $__path/eth0/operstate)" = "up" ]; then
-	echo "eth0/$(ifconfig eth0 | awk -F ' *|:' '/inet/{print $3}' | head -n 1)"
-
-elif [ "$(cat $__path/net/wlan0/operstate)" = "up" ]; then
-	echo "wlan0/$(ifconfig wlan0 | awk -F ' *|:' '/inet/{print $3}' | head -n 1)"
-
-elif [ "$(cat $__path/wlp3s0/operstate)" = "up" ]; then
-	echo "wlp3s0/$(ifconfig wlp3s0 | awk -F ' *|:' '/inet/{print $3}' | head -n 1)"
-fi
-
+	if [ -z "$__dev" ]; then
+	
+		__path="/sys/class/net"
+		if [ "$(cat $__path/virt0/operstate)" = "up" ]; then
+			__dev="virt0"
+		
+		elif [ "$(cat $__path/proton0/operstate)" = "up" ]; then
+			__dev="proton0"
+		
+		elif [ "$(cat $__path/enp0s31f6/operstate)" = "up" ]; then
+			__dev="enp0s31f6"
+		
+		elif [ "$(cat $__path/eth0/operstate)" = "up" ]; then
+			__dev="eth0"
+		
+		elif [ "$(cat $__path/net/wlan0/operstate)" = "up" ]; then
+			__dev="wlan0"
+		
+		elif [ "$(cat $__path/wlp3s0/operstate)" = "up" ]; then
+			__dev="wlp3s0"
+		fi
+	fi
 else
 	echo 'command ifconfig not found, please install net-tools or a package that provides ifconfig'
-fi
+fi 2> /dev/null
+
+echo "$__dev/$(ip -4 ad show "$__dev" | awk -F ' *|:' '/inet/{sub(/\/.*/,"",$3);print $3}' | head -n 1)"

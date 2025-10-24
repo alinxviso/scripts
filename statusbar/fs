@@ -1,2 +1,2 @@
-#!/usr/bin/ksh
+#!/usr/bin/env sh
 echo root/"$(df -h / | tail -n 1 | awk '{print int($3)}')"gb

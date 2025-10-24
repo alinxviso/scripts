@@ -1,4 +1,4 @@
-#!/usr/bin/ksh
+#!/usr/bin/env sh
 
 ## honestly idk if all of these checks for bat1 are redundant since my system works without them so i might 
 #  just get rid of them later

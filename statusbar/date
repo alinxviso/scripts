@@ -1,2 +1,2 @@
-#!/usr/bin/ksh
-date +'%Y/%M/%d/%a/%H:%m:%S'
+#!/usr/bin/env sh
+date +'%Y/%m/%d/%a/%H:%M:%S'
