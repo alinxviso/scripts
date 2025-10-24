@@ -1,4 +1,4 @@
-#!/usr/bin/ksh
+#!/usr/bin/env sh
 GW="$(route -n -4 2>/dev/null | awk 'END{print $2}')"
 
 if [ "$GW" = "0.0.0.0" ]; then
