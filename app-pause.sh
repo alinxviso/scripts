@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/sh
 
 # Copyright (c) 2018 Slawomir Wojciech Wojtczak (vermaden)
 # All rights reserved.

@@ -1,4 +1,4 @@
-#!/usr/bin/ksh
+#!/bin/sh
 ## Taken from https://tools.suckless.org/dmenu/scripts/switch
 # Modified to use shebang and centered
 # Too see more info about patches needed for dwm, see https://tools.suckless.org/dmenu/scripts

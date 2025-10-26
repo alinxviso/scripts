@@ -1,4 +1,4 @@
-#!/usr/bin/ksh
+#!/bin/sh
 
 # As to not type 'id -u' a million times
 EUID=$(id -u)

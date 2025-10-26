@@ -1,4 +1,4 @@
-#!/usr/bin/ksh
+#!/bin/sh
 if [ "$(xinput list-props "ELAN Touchscreen" | awk '/Device Enabled/{print int($4)}')" == 1 ]; then
 	xinput set-prop "ELAN Touchscreen" 186 0
 	printf touchscreen\ disabled\\n

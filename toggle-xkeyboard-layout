@@ -1,4 +1,4 @@
-#!/usr/bin/ksh
+#!/bin/sh
 if [ "$(setxkbmap -print | grep --color=never -o 'dvorak')" = "dvorak" ]; then
 	setxkbmap -layout us -option compose:ralt
 	printf keyboard\ qwerty\\n

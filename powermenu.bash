@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # See comments at bottom for configuration
 
 if [ "$XDG_SESSION_TYPE" = "wayland" ] && [ -z "$runner"] ; then
