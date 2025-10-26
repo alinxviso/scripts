@@ -1,4 +1,4 @@
-#!/usr/bin/ksh
+#!/bin/sh
 
 # i technically made this one from scratch but really i'm just stealing from mkfifo and doing it better
 
