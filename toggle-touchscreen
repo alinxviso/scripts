@@ -1,10 +1,10 @@
 #!/bin/sh
 if [ "$(xinput list-props "ELAN Touchscreen" | awk '/Device Enabled/{print int($4)}')" == 1 ]; then
-	xinput set-prop "ELAN Touchscreen" 186 0
+	xinput set-prop "ELAN Touchscreen" 185 0
 	printf touchscreen\ disabled\\n
 	notify-send "Touchscreen toggle" "Touchscreen Disabled" -h string:x-canonical-private-synchronous:touchscreen --expire-time=2000
 else
-	xinput set-prop "ELAN Touchscreen" 186 1
+	xinput set-prop "ELAN Touchscreen" 185 1
 	printf touchscreen\ enabled\\n
 	notify-send "Touchscreen toggle" "Touchscreen Enabled" -h string:x-canonical-private-synchronous:touchscreen --expire-time=2000
 fi
