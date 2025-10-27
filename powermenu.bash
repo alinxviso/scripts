@@ -7,7 +7,9 @@ elif [ "$XDG_SESSION_TYPE" = "x11" ] && [ -z "$runner" ] ; then
 	runner="dmenu -l 7 -c" 
 fi
 
-if [ -z "$currentwm" ];then
+if [ -z "$currentwm" ] && [ -z $XDG_CURRENT_DESKTOP ];then
+	currentwm="$XDG_SESSION_DESKTOP"
+else
 	currentwm="$XDG_CURRENT_DESKTOP"
 fi
 

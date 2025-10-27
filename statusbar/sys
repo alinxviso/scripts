@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 FREQ="$(awk '/MHz/{ temp+=$4; n++ } END{ printf("%f\n", temp/n) }' /proc/cpuinfo | awk '{ sub(".[^.]*$", ""); print }')"
-TEMP="$(sensors coretemp-isa-0000 | awk '/Pack/{print int($2)}')"
+TEMP="$(sensors coretemp-isa-0000 | awk '/Pack/{print int($4)}')"
 LDAVG="$(cat /proc/loadavg | awk '{print ($2)}')"
 MEM="$(~/.scripts/statusbar/memoryused)"
 
