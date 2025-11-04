@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# As to not type 'id -u' a million times
-EUID=$(id -u)
+# As to not type 'id -u' a million times, only use if /bin/sh is not a symlink to bash
+# EUID=$(id -u)
 
 # Checks if the device is a laptop
 if [ -e /sys/class/power_supply/AC ]; then

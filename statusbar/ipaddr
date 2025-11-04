@@ -9,7 +9,7 @@ else
 fi
 
 if [ -z "$__dev" ]; then
-	__devices="virt0 proton0 eth0 enp0s31f6 wlan0 wlp3s0"
+	__devices="virt0 proton0 eth0 enp0s31f6 wlan0 wlp3s0 wlp1s0"
 	for __tested in $__devices; do
 		if [ "$(cat /sys/class/net/$__tested/operstate)" = "up" ]; then
 			__dev=$__tested	
