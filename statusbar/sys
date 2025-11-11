@@ -1,6 +1,13 @@
 #!/usr/bin/env sh
 FREQ="$(awk '/MHz/{ temp+=$4; n++ } END{ printf("%f\n", temp/n) }' /proc/cpuinfo | awk '{ sub(".[^.]*$", ""); print }')"
-TEMP="$(sensors coretemp-isa-0000 | awk '/Pack/{print int($4)}')"
+
+case $1 in
+	"coretemp" )
+		TEMP="$(sensors coretemp-isa-0000 | awk '/Pack/{print int($4)}')";;
+	"k10temp" )
+		TEMP="$(sensors k10temp-pci-00c3 | awk '/Tctl/{print int($2)}')";;
+	* ) TEMP="argument is not correct! please set to either coretemp or k10temp depending on your cpu"
+esac
 LDAVG="$(cat /proc/loadavg | awk '{print ($2)}')"
 MEM="$(~/.scripts/statusbar/memoryused)"
 
