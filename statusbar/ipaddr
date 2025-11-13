@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 if [ -e /sbin/ip ]; then
-	break
+	echo
 else
 	echo 'command ip not found, please install iproute2 or a package that provides ip'
 	echo 'if the ifconfig binary is installed, use ipaddr-ifconfig instead'
