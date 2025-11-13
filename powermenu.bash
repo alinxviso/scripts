@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
 # See comments at bottom for configuration
 
-if [ "$XDG_SESSION_TYPE" = "wayland" ] && [ -z "$runner"] ; then
-	runner="bemenu -i -c -l 7 -W.1 -p /"
-elif [ "$XDG_SESSION_TYPE" = "x11" ] && [ -z "$runner" ] ; then
-	runner="dmenu -l 7 -c" 
+if [ -z "$runner" ]; then
+case "$XDG_SESSION_TYPE" in
+	[Ww]"ayland" )
+		export runner="bemenu -i -c -l 7 -W.1 -p /" ;;
+	[Xx]"11" )
+		export runner="dmenu -l 7 -c" ;;
+esac
 fi
 
-if [ -z "$currentwm" ] && [ -z $XDG_CURRENT_DESKTOP ];then
+if [ -z "$currentwm" ] && [ -z "$XDG_CURRENT_DESKTOP" ];then
 	currentwm="$XDG_SESSION_DESKTOP"
 else
 	currentwm="$XDG_CURRENT_DESKTOP"
@@ -23,7 +26,7 @@ fi
 rebootcmd="systemctl reboot"
 poweroffcmd="systemctl poweroff"
 no="exit"
-source $HOME/.scripts/powermenu-sessions.bash
+source "$HOME/.scripts/powermenu-sessions.bash"
 currentwm=${currentwm,,}
 
 function areyousure {
@@ -35,7 +38,7 @@ function areyousure {
 }
 
 function powermenu {
-	if [[ $hibernate = "true" ]]; then
+	if [[ "$hibernate" = "true" ]]; then
 		options="cancel\nlock\nsleep\nhibernate\nrestart\nshutdown\nexit $currentwm"
 	else
 		options="cancel\nlock\nsleep\nrestart\nshutdown\nexit $currentwm"
@@ -71,9 +74,9 @@ powermenu && exit
 notify-send "did nothing show up?" "make sure XDG_SESSION_TYPE is set to either 'x11' or 'wayland', or that dmenu has the center patch applied. see script for more details" || echo "did nothing show up? make sure XDG_SESSION_TYPE is set to either 'x11' or 'wayland', or that dmenu has the center patch applied. see script for more details. By default the script uses bemenu for wayland and dmenu for x11"
 
 
-###########################################################################################################################################################################################################################################################################
-#                                                                                                                              CONFIGURATION                                                                                                                              #
-###########################################################################################################################################################################################################################################################################
+#########################################################################################
+#                                    CONFIGURATION                                      #
+#########################################################################################
 
 # Every variable can be changed in the "powermenu-settings.bash" file, all well as the session commands, which lets you set defaults or create new sessions.
 # To use the powermenu, first copy powermenu-sessions.bash.example to powermenu-sessions.bash, then make any changes you want
@@ -81,10 +84,11 @@ notify-send "did nothing show up?" "make sure XDG_SESSION_TYPE is set to either 
 
 
 
-###########################################################################################################################################################################################################################################################################
-#                                                                                                                                 SESSIONS                                                                                                                                #
-###########################################################################################################################################################################################################################################################################
+#########################################################################################
+#                                      SESSIONS                                         #
+#########################################################################################
 
-# Sessions let you change every command or variable for a specific session, or add a new one.   If you have a WM or DE that isn't in the defaults, you can easily add your own or modify an existing one
-#
+# Sessions let you change every command or variable for a specific session, or add a new one.   
+# If you have a WM or DE that isn't in the defaults, you can easily add your own or modify an existing one
+
 

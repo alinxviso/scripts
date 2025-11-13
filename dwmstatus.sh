@@ -1,11 +1,13 @@
 #!/bin/sh
 
-# to support euid if /bin/sh isn't bash
-sh="$(realpath /bin/sh)"
-truncsh="${sh##*/}"
-if [ "$truncsh"  != "bash" ]; then
-	EUID=$(id -u)
-fi
+# to support euid if /bin/sh isn't bash turns out it doesn't work if /usr/bin/sh isn't a symlink which happens sometimes???
+#sh="$(realpath /bin/sh)"
+#truncsh="${sh##*/}"
+#if [ "$truncsh"  != "bash" ]; then
+#	EUID=$(id -u) 
+#fi
+
+
 
 ## IMPORTANT
 # if you have an intel cpu, you will have to have the coretemp module loaded an the sys script must have the coretemp argument
