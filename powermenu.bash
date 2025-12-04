@@ -13,6 +13,7 @@ if [ -e /sys/power/resume ];then
 	echo hibernate is possible
 	sleepcmd="systemctl suspend-then-hibernate"
 	hibernatecmd="systemctl hibernate"
+	echo $hibernatecmd
 fi
 source "$HOME/.scripts/powermenu-sessions.bash"
 currentwm=${currentwm,,}
@@ -26,7 +27,7 @@ function areyousure {
 }
 
 function powermenu {
-	if [[ -z "$hibernatecmd" ]]; then
+	if [[ -z "$hibernate" ]]; then
 		options="cancel\nlock\nsleep\nrestart\nshutdown\nexit $currentwm"
 	else
 		options="cancel\nlock\nsleep\nhibernate\nrestart\nshutdown\nexit $currentwm"
