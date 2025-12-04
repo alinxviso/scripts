@@ -13,29 +13,15 @@ no="exit"
 
 ### Sessions
 # Most are untested so please submit a pull or bug report if one doesn't work
+case $currentwm in
+	bspwm )         exitcurrentwm="bspc quit" ;;
+	dwm )           exitcurrentwm="pkill dwm && pkill xinit" ;;
+	hyprland )      exitcurrentwm="hyprctl dispatch exit" ;;
+	i3 )            exitcurrentwm="i3-msg exit" ;;
+	openbox )       exitcurrentwm="openbox --exit" ;;
+	qtile )         exitcurrentwm="qtile cmd-obj -o cmd -f shutdown" ;;
+	sway )          exitcurrentwm="swaymsg exit" ;;
+	
+	"kill literally everything dude" ) exitcurrentwm="loginctl kill-session $XDG_SESSION_ID" ;;
 
-if [[ $currentwm = "dwm" ]];then
-	exitcurrentwm="pkill dwm && pkill xinit"
-
-elif [[ $currentwm = "bspwm" ]];then
-	exitcurrentwm="bspc quit"
-
-elif [[ $currentwm = "qtile" ]];then
-	exitcurrentwm="qtile cmd-obj -o cmd -f shutdown"
-
-elif [[ $currentwm = "openbox" ]];then
-	exitcurrentwm="openbox --exit"
-
-elif [[ $currentwm = "hyprland" ]]; then
-	exitcurrentwm="hyprctl dispatch exit"
-
-elif [[ $currentwm = "i3" ]] || [[ $currentwm = "i3wm" ]]; then
-	exitcurrentwm="i3-msg exit"
-
-elif [[ $currentwm = "sway" ]] || [[ $currentwm = "swaywm" ]]; then
-	exitcurrentwm="swaymsg exit"
-
-elif [[ $currentwm = "kill literally everything dude" ]];then
-	exitcurrentwm="loginctl kill-session $XDG_SESSION_ID"
-
-fi
+esac
