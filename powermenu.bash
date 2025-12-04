@@ -1,31 +1,19 @@
 #!/usr/bin/env bash
 # See comments at bottom for configuration
 
-if [ -z "$runner" ]; then
-case "$XDG_SESSION_TYPE" in
-	[Ww]"ayland" )
-		export runner="bemenu -i -c -l 7 -W.1 -p /" ;;
-	[Xx]"11" )
-		export runner="dmenu -l 7 -c" ;;
-esac
-fi
 
-if [ -z "$currentwm" ] && [ -z "$XDG_CURRENT_DESKTOP" ];then
-	currentwm="$XDG_SESSION_DESKTOP"
-else
-	currentwm="$XDG_CURRENT_DESKTOP"
-fi
-
+# Default commands
 lockcmd="loginctl lock-session"
-if [ -e /sys/power/resume ];then
-sleepcmd="systemctl suspend-then-hibernate"
-hibernatecmd="systemctl hibernate"
-else
 sleepcmd="systemctl suspend"
-fi
 rebootcmd="systemctl reboot"
 poweroffcmd="systemctl poweroff"
 no="exit"
+if [ -e /sys/power/resume ];then
+	hibernate="true"
+	echo hibernate is possible
+	sleepcmd="systemctl suspend-then-hibernate"
+	hibernatecmd="systemctl hibernate"
+fi
 source "$HOME/.scripts/powermenu-sessions.bash"
 currentwm=${currentwm,,}
 
@@ -38,36 +26,21 @@ function areyousure {
 }
 
 function powermenu {
-	if [[ "$hibernate" = "true" ]]; then
-		options="cancel\nlock\nsleep\nhibernate\nrestart\nshutdown\nexit $currentwm"
-	else
+	if [[ -z "$hibernatecmd" ]]; then
 		options="cancel\nlock\nsleep\nrestart\nshutdown\nexit $currentwm"
+	else
+		options="cancel\nlock\nsleep\nhibernate\nrestart\nshutdown\nexit $currentwm"
 	fi
 	selected=$(echo -e "$options" | $runner)
-	if [[ $selected = "cancel" ]]; then
-		return
-
-	elif [[ $selected = "lock" ]]; then
-		$lockcmd
-
-	elif [[ $selected = "sleep" ]]; then
-		$sleepcmd
-
-	elif [[ $selected = "hibernate" ]]; then
-		$hibernatecmd
-
-	elif [[ $selected = "restart" ]]; then
-		yes="$rebootcmd"
-		areyousure
-
-	elif [[ $selected = "shutdown" ]]; then
-		yes="$poweroffcmd"
-		areyousure
-
-	elif [[ $selected = "exit $currentwm" ]]; then
-		$exitcurrentwm
-
-	fi
+	case $selected in
+		"cancel" )      return;;
+		"lock" )        $lockcmd;;
+		"sleep" )       $sleepcmd;;
+		"hibernate" )   yes="$hibernatecmd" areyousure;;
+		"restart" )     yes="$rebootcmd" areyousure;;
+		"shutdown" )    yes="$poweroffcmd" areyousure;;
+		"exit $currentwm" ) yes="$exitcurrentwm" areyousure ;;
+	esac
 }
 powermenu && exit
 

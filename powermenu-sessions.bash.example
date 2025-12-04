@@ -1,15 +1,14 @@
-if [ -e /sys/power/resume ];then
-	hibernate="true"
-	echo hibernate is possible
-fi
+### Commands
+# These are pretty self explanatory, they are the commands that are run when you
+# select an option in the menu. They can be added in a session to have a different
+# command for a certain environment if you'd like
+
 lockcmd="loginctl lock-session"
 sleepcmd="systemctl suspend"
 hibernatecmd="systemctl hibernate"
 rebootcmd="systemctl reboot"
 poweroffcmd="systemctl poweroff"
 no="exit"
-
-
 
 ### Sessions
 # Most are untested so please submit a pull or bug report if one doesn't work
@@ -23,5 +22,27 @@ case $currentwm in
 	sway )          exitcurrentwm="swaymsg exit" ;;
 	
 	"kill literally everything dude" ) exitcurrentwm="loginctl kill-session $XDG_SESSION_ID" ;;
-
 esac
+
+### Runner
+# The runner is the program that will display the menu and let you select the command
+# Setting the runner can let you use terminal-based solutions as well, like bemenu
+# with the ncurses option
+# Make sure you keep the if statement to let you set the runner in the command line
+# arguments
+
+if [ -z "$runner" ]; then
+case "$XDG_SESSION_TYPE" in
+	[Ww]"ayland" )	export runner="bemenu -i -c -l 7 -W.1 -p /" ;;
+	[Xx]"11" )	export runner="dmenu -l 7 -c" ;;
+esac
+fi
+
+
+# If neither currentwm or xdg current are set, it will try to set using xdg session
+
+if [ -z "$currentwm" ] && [ -z "$XDG_CURRENT_DESKTOP" ];then
+	currentwm="$XDG_SESSION_DESKTOP"
+else
+	currentwm="$XDG_CURRENT_DESKTOP"
+fi
