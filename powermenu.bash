@@ -2,6 +2,20 @@
 # See comments at bottom for configuration
 
 
+function nosession {
+	case "$XDG_SESSION_TYPE" in
+		[Ww]"ayland" )	export runner="bemenu -i -c -l 7 -W.1 -p /" ;;
+		[Xx]"11" )	export runner="dmenu -l 7 -c" ;;
+	esac
+	options="no\nyes"
+	yesno=$(echo -e "$options" | $runner -p 'session file was not found, copy example?')
+	if [[ $yesno = "yes" ]]; then 
+		cp "$HOME/.scripts/powermenu-sessions.bash.example" "$HOME/.scripts/powermenu-sessions.bash"
+		echo copied!
+	elif [[ $yesno = "no" ]]; then exit
+	fi
+}
+
 # Default commands
 lockcmd="loginctl lock-session"
 sleepcmd="systemctl suspend"
@@ -15,7 +29,12 @@ if [ -e /sys/power/resume ];then
 	hibernatecmd="systemctl hibernate"
 	echo $hibernatecmd
 fi
-source "$HOME/.scripts/powermenu-sessions.bash"
+## Keep this line so your session saves!!!
+if [ -e "$HOME/.scripts/powermenu-sessions.bash" ]; then
+	source "$HOME/.scripts/powermenu-sessions.bash"
+else
+	nosession
+fi
 currentwm=${currentwm,,}
 
 function areyousure {
