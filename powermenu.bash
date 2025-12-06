@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # See comments at bottom for configuration
 
-
+## if there's no session file detected, prompt for creation
 function nosession {
 	case "$XDG_SESSION_TYPE" in
 		[Ww]"ayland" )	export runner="bemenu -i -c -l 7 -W.1 -p /" ;;
@@ -16,27 +16,29 @@ function nosession {
 	fi
 }
 
-# Default commands
+## Default commands
 lockcmd="loginctl lock-session"
 sleepcmd="systemctl suspend"
 rebootcmd="systemctl reboot"
 poweroffcmd="systemctl poweroff"
 no="exit"
-if [ -e /sys/power/resume ];then
+if [ -e /sys/power/resume ];then # check if the system is able to hibernate
 	hibernate="true"
 	echo hibernate is possible
 	sleepcmd="systemctl suspend-then-hibernate"
 	hibernatecmd="systemctl hibernate"
 	echo $hibernatecmd
 fi
-## Keep this line so your session saves!!!
-if [ -e "$HOME/.scripts/powermenu-sessions.bash" ]; then
-	source "$HOME/.scripts/powermenu-sessions.bash"
-else
-	nosession
-fi
-currentwm=${currentwm,,}
 
+# Picks what file to use for settings
+if [ -e "$HOME/.scripts/powermenu-settings.bash" ]; then
+	source "$HOME/.scripts/powermenu-settings.bash"
+else
+	source "$HOME/.scripts/powermenu-settings.bash.default"
+fi
+currentwm=${currentwm,,} ## makes the session all lowercase for uniformity, bashism
+
+## prompts for verification for stuff
 function areyousure {
 	options="no\nyes"
 	yesno=$(echo -e "$options" | $runner -p 'Are you sure?')
@@ -45,6 +47,7 @@ function areyousure {
 	fi
 }
 
+## The actual menu!!
 function powermenu {
 	if [[ -z "$hibernate" ]]; then
 		options="cancel\nlock\nsleep\nrestart\nshutdown\nexit $currentwm"
@@ -71,8 +74,8 @@ notify-send "did nothing show up?" "make sure XDG_SESSION_TYPE is set to either 
 #                                    CONFIGURATION                                      #
 #########################################################################################
 
-# Every variable can be changed in the "powermenu-settings.bash" file, all well as the session commands, which lets you set defaults or create new sessions.
-# To use the powermenu, first copy powermenu-sessions.bash.example to powermenu-sessions.bash, then make any changes you want
+# Every variable can be changed in the "powermenu-settings.bash" file, which lets you set
+# defaults or create new sessions. If it's not found it will use the .default file.
 
 
 
@@ -81,7 +84,8 @@ notify-send "did nothing show up?" "make sure XDG_SESSION_TYPE is set to either 
 #                                      SESSIONS                                         #
 #########################################################################################
 
-# Sessions let you change every command or variable for a specific session, or add a new one.   
-# If you have a WM or DE that isn't in the defaults, you can easily add your own or modify an existing one
-
-
+# Sessions are the settings that are used for the detected wm using "$currentwm" which is
+# set manually, by $XDG_SESSION_DESKTOP, or by $XDG_CURRENT_DESKTOP, in that order.
+# They set what commands are run for each option, and the name that shows up in the menu.
+#
+# More explanation is given within the settings file
