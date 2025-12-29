@@ -31,10 +31,15 @@
 # vermaden [AT] interia [DOT] pl
 # https://vermaden.wordpress.com
 
-# GW=$( route -n -4 -v get default 2> /dev/null | awk 'END{print $2}' )
-GW=$( route -n -4 -v get default 2> /dev/null | awk '/gateway:/ {printf("%s", $2)}' )
+# modified by ant (alinxviso) to be usable on linux systems
+# taken from https://github.com/vermaden/scripts
+# hosted at https://github.com/alinxviso/scripts
 
-if [ "${GW}" = "0.0.0.0" -o "${GW}" = "" ]
+# GW=$( route -n -4 -v get default 2> /dev/null | awk 'END{print $2}' )
+#GW=$( route -n -4 -v get default 2> /dev/null | awk '/gateway:/ {printf("%s", $2)}' )
+GW=$(route -n -4 -v | awk '{print ($2)}' | grep -ve "IP" -ve "Gateway" -ve "0.0.0.0" | head -n1)
+
+if [ "${GW}" = "" ]
 then
   GW=-
 fi
