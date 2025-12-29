@@ -84,7 +84,7 @@ __math() {
   IF_GW=$(   ~/.scripts/vermaden/__conky_if_gw.sh )
   IF_DNS=$(  ~/.scripts/vermaden/__conky_if_dns.sh )
   IF_PING=$( ~/.scripts/vermaden/__conky_if_ping.sh dzen2 )
-  IF_XFER=$( ~/.scripts/vermaden/__conky_if_xfer.sh )
+#  IF_XFER=$( ~/.scripts/vermaden/__conky_if_xfer.sh )
   VOL=$(     pamixer get-volume)
 # VOL=$(     for I in /dev/mixer*; do mixer -f "${I}" vol | awk -F ':' '/vol.volume/ {printf("%s/",$2*100)}'; done | sed 's/.$//g' )
 # VOL=$(     mixer -s vol | awk -F ':' '{printf("%s",$2)}' )
@@ -110,12 +110,11 @@ echo -n "${CDE}| ${CLA}ip:"    "${CVA}${IF_IP}"     # NO SPACE AT THE END
 echo -n "${CDE}| ${CLA}gw:"    "${CVA}${IF_GW} "
 echo -n "${CDE}| ${CLA}dns:"   "${CVA}${IF_DNS} "
 echo -n "${CDE}| ${CLA}ping:"  "${CVA}${IF_PING} "
-echo -n "${CDE}| ${CLA}xfer:"  "${CVA}${IF_XFER} "
+#echo -n "${CDE}| ${CLA}xfer:"  "${CVA}${IF_XFER} "
 echo -n "${CDE}| ${CLA}vol:"   "${CVA}${VOL} "
 echo -n "${CDE}| ${CLA}fs:"    "${CVA}${FS}"        # NO SPACE AT THE END
 echo -n "${CDE}| ${CLA}bat:"   "${CVA}${BAT} "
 echo -n "${CDE}| ${CLA}top:"   "${CVA}${TOP}"       # NO SPACE AT THE END
 echo -n "${CDE}| ${CLA}music:" "${CVA}${MUSIC}"
 echo
-
 
