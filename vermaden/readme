@@ -1,0 +1,7 @@
+unmodified:
+__conky_if_dns.sh
+
+modified
+__conky_if_ip.sh
+__conky_if_ping.sh
+__conky_if_gw.sh
