@@ -31,9 +31,15 @@
 # vermaden [AT] interia [DOT] pl
 # https://vermaden.wordpress.com
 
+# modified by ant (alinxviso) to be usable on linux systems
+# taken from https://github.com/vermaden/scripts
+# hosted at https://github.com/alinxviso/scripts
+
 # SETTINGS
-WLAN=wlan0
-WWAN=tun0
+WLAN=wlp3s0
+ALL_UP=$(ip a | awk '/ UP /{print ($2)}' | head -n1) # finds all active internet devices
+#WLAN=$($ALl_UP | sed 's,:,,g') # finds the first active internet device
+WWAN=tun0 # don't have wwan card yet so it'll stay as tun0 for now
 WWAN_FAIL=0
 
 # WWAN DEBUG
@@ -43,7 +49,8 @@ WWAN_FAIL=0
 #   WWAN_FAIL=1
 # fi
 
-case $( ifconfig -u | grep -v '127.0.0.1' | grep -c 'inet ' ) in
+#case $( ifconfig -u | grep -v '127.0.0.1' | grep -c 'inet ' ) in
+case $( ip a | grep -v '127.0.0.1' | grep -c 'inet ' ) in
   (0)
     if [ ${WWAN_FAIL} -ne 1 ]
     then
@@ -52,7 +59,7 @@ case $( ifconfig -u | grep -v '127.0.0.1' | grep -c 'inet ' ) in
     fi
     ;;
   (*)
-    for I in $( ifconfig -l -u | sed s/lo0//g )
+    for I in $( ip -br a | awk '/UP/{print ($1)}' | sed s/lo0//g )
     do
       if [ "${I}" = "${WWAN}" ]
       then
@@ -61,17 +68,18 @@ case $( ifconfig -u | grep -v '127.0.0.1' | grep -c 'inet ' ) in
           continue
         fi
       fi
-      IFCONFIG=$( ifconfig ${I} )
+      IFCONFIG=$( ip a show dev ${I} )
       if [ "${I}" = "${WLAN}" ]
       then
         echo -n ${I}
-        SSID=$( echo "${IFCONFIG}" | grep 'ssid' )
-        if echo "${SSID}" | grep -q '"'
-        then
-          SSID=$( echo "${IFCONFIG}" | awk -F \" '/ssid/ {print $2}' )
-        else
-          SSID=$( echo "${IFCONFIG}" | awk '/ssid/ {print $2}' )
-        fi
+#        SSID=$( echo "${IFCONFIG}" | grep 'ssid' )
+	SSID=$( nmcli -t -f active,ssid dev wifi | grep yes | cut -d: -f2 ) # this assumes that you're using NetworkManager which is default on most besides non-systemd or diy distros
+#	if echo "${SSID}" | grep -q '"'
+#        then
+#          SSID=$( echo "${IFCONFIG}" | awk -F \" '/ssid/ {print $2}' )
+#        else
+#          SSID=$( echo "${IFCONFIG}" | awk '/ssid/ {print $2}' )
+#        fi
         if [ "${SSID}" != "" ]
         then
           echo -n "/${SSID}"

@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/sh
 
 # Copyright (c) 2018 Slawomir Wojciech Wojtczak (vermaden)
 # All rights reserved.
@@ -31,11 +31,27 @@
 # vermaden [AT] interia [DOT] pl
 # https://vermaden.wordpress.com
 
+# modified by ant (alinxviso) to be usable on linux systems
+# taken from https://github.com/vermaden/scripts
+
 # SETTINGS
 CLA='^fg(#aaaaaa)'
 CVA='^fg(#eeeeee)'
 CDE='^fg(#dd0000)'
 alias bsdgrep=grep
+
+# temp sensor finder
+__sensors="$(sensors | grep -e 'thinkpad' -e 'k10temp' -e 'coretemp' | head -n1)"
+case $__sensors in
+	"thinkpad-isa-0000" )
+		TEMP="$(sensors thinkpad-isa-0000 | awk '/CPU/{print int($2)}')";;
+        "coretemp-isa-0000" )
+                TEMP="$(sensors coretemp-isa-0000 | awk '/Pack/{print int($4)}')";;
+        "k10temp-pci-00c3" )
+                TEMP="$(sensors k10temp-pci-00c3 | awk '/Tctl/{print int($2)}')";;
+        * ) TEMP="echo 'cpu temp sensor not found, please run sensor and fix within script'"
+esac
+
 
 # CUSTOM MATH FUNCTION
 __math() {
@@ -44,31 +60,32 @@ __math() {
   case ${RESULT} in
     (.*) echo -n 0 ;;
   esac
-  echo ${RESULT}
+  echo "${RESULT}"
   unset SCALE
   unset RESULT
 }
 
 # GATHER DATA
-  PS=$(      ps ax -o %cpu,rss,command -c )
-  SMP=$(     sysctl -n kern.smp.cpus )
+  PS=$(      ps ax -o %cpu,rss,command )
+#  SMP=$(     sysctl -n kern.smp.cpus )
+  SMP=$(     nproc) # i actually have no real idea this is supposed to do except show "active" cpus so nproc it is
   SMP=$((    ${SMP} * 100 ))
   CPU=$(     echo "${PS}" | awk -v SMP=${SMP} '/\ idle$/ {printf("%.1f%%",SMP-$1)}' )
 # LOAD=$(    sysctl -n vm.loadavg | awk '{print $2}' )
   DATE=$(    date +%Y/%m/%d/%a/%H:%M )
-  FREQ=$(    sysctl -n dev.cpu.0.freq )
-  TEMP=$(    sysctl -n hw.acpi.thermal.tz0.temperature )
-# TEMP=$(    sysctl -n dev.cpu.0.temperature )
-  MEM=$(( $( sysctl -n vm.stats.vm.v_inactive_count )
-        + $( sysctl -n vm.stats.vm.v_free_count )
-        + $( sysctl -n vm.stats.vm.v_cache_count ) ))
-  MEM=$(     __math ${MEM} \* 4 / 1024 / 1024 )
-  IF_IP=$(   ~/scripts/__conky_if_ip.sh )
-  IF_GW=$(   ~/scripts/__conky_if_gw.sh )
-  IF_DNS=$(  ~/scripts/__conky_if_dns.sh )
-  IF_PING=$( ~/scripts/__conky_if_ping.sh dzen2 )
-  IF_XFER=$( ~/scripts/__conky_if_xfer.sh )
-  VOL=$(     for I in /dev/mixer*; do mixer -f ${I} vol | awk -F ':' '/vol.volume/ {printf("%s/",$2*100)}'; done | sed 's/.$//g' )
+  FREQ="$(   awk '/MHz/{ temp+=$4; n++ } END{ printf("%f\n", temp/n) }' /proc/cpuinfo | awk '{ sub(".[^.]*$", ""); print }')"
+#  MEM=$(( $( vmstat -s | awk '/inactive/{print int($1)}' )
+#	+ $( vmstat -s | awk '/free memory/{print int($1)}')
+#        + $( sysctl -n vm.stats.vm.v_cache_count ) ))
+#  MEM=$(     __math ${MEM} \* 4 / 1024 / 1024 )
+  MEM=$(     free --mega | awk '/^M/{print int($3)}' )
+  IF_IP=$(   ~/.scripts/vermaden/__conky_if_ip.sh )
+  IF_GW=$(   ~/.scripts/vermaden/__conky_if_gw.sh )
+  IF_DNS=$(  ~/.scripts/vermaden/__conky_if_dns.sh )
+  IF_PING=$( ~/.scripts/vermaden/__conky_if_ping.sh dzen2 )
+  IF_XFER=$( ~/.scripts/vermaden/__conky_if_xfer.sh )
+  VOL=$(     pamixer get-volume)
+# VOL=$(     for I in /dev/mixer*; do mixer -f "${I}" vol | awk -F ':' '/vol.volume/ {printf("%s/",$2*100)}'; done | sed 's/.$//g' )
 # VOL=$(     mixer -s vol | awk -F ':' '{printf("%s",$2)}' )
 # VOL=$(     for I in /dev/mixer*; do mixer -f ${I} -s vol | awk -F ':' '{printf("%s/",$2)}'; done | sed 's/.$//g' )
 # VOL=$(     for I in /dev/mixer*
@@ -78,7 +95,8 @@ __math() {
 #                (*)       mixer -f ${I} -s vol | awk -F ':' '{printf("%s/",$2)}'               ;;
 #              esac
 #            done | sed 's/.$//g' )
-  FS=$(      zfs list -H -d 0 -o name,avail | awk '{printf("%s/%s ",$1,$2)}' )
+  FS=$(      df -h / | tail -n 1 | awk '{print int($3)}')
+#  FS=$(      zfs list -H -d 0 -o name,avail | awk '{printf("%s/%s ",$1,$2)}' ) # still works for zfs on linux so it's here as an option
   BAT=$(     ~/scripts/__conky_battery_separate.sh dzen2 )
   TOP=$(     echo "${PS}" | bsdgrep -v -E '(COMMAND|idle)$' | sort -r -n \
                | head -3 | awk '{printf("%s/%d%%/%.1fGB ",$3,$1,$2/1024/1024)}' )

@@ -31,6 +31,10 @@
 # vermaden [AT] interia [DOT] pl
 # https://vermaden.wordpress.com
 
+# modified by ant (alinxviso) to be usable on linux systems
+# taken from https://github.com/vermaden/scripts
+# hosted at https://github.com/alinxviso/scripts
+
 __usage() {
   echo "usage: ${0##*/} TYPE"
   echo
@@ -43,7 +47,7 @@ __usage() {
 # URL=$( __conky_if_dns.sh )
 # URL=freebsd.org
   URL=96.47.72.84
-  DELAY=1.25
+  TTL=50
 
 # TYPE
 case ${1} in
@@ -52,7 +56,7 @@ case ${1} in
 esac
 
 # WAIT 2 SECONDS WITH -t OPTION
-if ping -c 1 -s 0 -t ${DELAY} -q ${URL} 1> /dev/null 2> /dev/null
+if ping -c 1 -s 0 -t ${TTL} -q ${URL} 1> /dev/null 2> /dev/null # if there's a better time to live (ttl) please tell me
 then
   echo -n OK
 else
