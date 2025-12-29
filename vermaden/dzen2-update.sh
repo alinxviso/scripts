@@ -85,7 +85,7 @@ __math() {
   IF_DNS=$(  ~/.scripts/vermaden/__conky_if_dns.sh )
   IF_PING=$( ~/.scripts/vermaden/__conky_if_ping.sh dzen2 )
 #  IF_XFER=$( ~/.scripts/vermaden/__conky_if_xfer.sh )
-  VOL=$(     pamixer get-volume)
+  VOL=$(     pamixer --get-volume)
 # VOL=$(     for I in /dev/mixer*; do mixer -f "${I}" vol | awk -F ':' '/vol.volume/ {printf("%s/",$2*100)}'; done | sed 's/.$//g' )
 # VOL=$(     mixer -s vol | awk -F ':' '{printf("%s",$2)}' )
 # VOL=$(     for I in /dev/mixer*; do mixer -f ${I} -s vol | awk -F ':' '{printf("%s/",$2)}'; done | sed 's/.$//g' )
