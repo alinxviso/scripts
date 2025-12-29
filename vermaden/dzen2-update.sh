@@ -33,6 +33,7 @@
 
 # modified by ant (alinxviso) to be usable on linux systems
 # taken from https://github.com/vermaden/scripts
+# hosted at https://github.com/alinxviso/scripts
 
 # SETTINGS
 CLA='^fg(#aaaaaa)'
@@ -97,7 +98,7 @@ __math() {
 #            done | sed 's/.$//g' )
   FS=$(      df -h / | tail -n 1 | awk '{print int($3)}')
 #  FS=$(      zfs list -H -d 0 -o name,avail | awk '{printf("%s/%s ",$1,$2)}' ) # still works for zfs on linux so it's here as an option
-  BAT=$(     ~/scripts/__conky_battery_separate.sh dzen2 )
+  BAT=$(     ~/.scripts/vermaden/__conky_battery_separate.sh dzen2 )
   TOP=$(     echo "${PS}" | bsdgrep -v -E '(COMMAND|idle)$' | sort -r -n \
                | head -3 | awk '{printf("%s/%d%%/%.1fGB ",$3,$1,$2/1024/1024)}' )
   MUSIC=$(   deadbeef --nowplaying "%f" 2> /dev/null | sed -E -e 's.^nothing$.N/A.g' )
