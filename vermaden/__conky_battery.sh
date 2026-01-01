@@ -31,6 +31,10 @@
 # vermaden [AT] interia [DOT] pl
 # https://vermaden.wordpress.com
 
+# modified by ant (alinxviso) to be usable on linux systems
+# taken from https://github.com/vermaden/scripts
+# hosted at https://github.com/alinxviso/scripts
+
 # SETTINGS
 COLOR_WHITE=#ffffff
 COLOR_ORANGE=#ffaa00
@@ -78,28 +82,32 @@ case ${1} in
   (*)           __usage ;;
 esac
 
-LIFE=$( sysctl -n hw.acpi.battery.life )
-case $( sysctl -n hw.acpi.acline ) in
-  (1)
-    __color_life ${LIFE}
+
+case $( acpi | grep "Charging" ) in
+  (Charging) # will debug later
+        LIFE=$(acpi | awk '/Charging/{print ($4)}' ) 
+        __color_life ${LIFE}
     case ${1} in
       (conky) echo "AC/\${color ${COLOR_LIFE}}${LIFE}%\${color}" ;;
       (dzen2) echo "AC/^fg(${COLOR_LIFE})${LIFE}%" ;;
     esac
     ;;
-  (0)
-    TIME=$( sysctl -n hw.acpi.battery.time )
-    if [ "${TIME}" != "-1" ]
-    then
-      HOUR=$(( ${TIME} / 60 ))
-      MINS=$(( ${TIME} % 60 ))
-      [ ${MINS} -lt 10 ] && MINS="0${MINS}"
-    else
-      # WE HAVE TO ASSUME SOMETHING SO LETS ASSUME 2:22
-      TIME=142
-      HOUR=2
-      MINS=22
-    fi
+
+
+  (*) # if it's found that it's not charging
+      LIFE=$(acpi | awk '/Discharging/{print ($4)}' | awk '{print int($1)}')
+      TIME=$(acpi | awk '/Discharging/{print ($5)}')
+      HOUR=$(echo "$TIME" | cut -b 1,2)
+      MINS=$(echo "$TIME" | cut -b 4,5)
+      TIME=$(( ${MINS} + ( ${HOUR} * 60 )))
+#      echo $TIME $HOUR $MINS $LIFE
+#      [ ${MINS} -lt 10 ] && MINS="0${MINS}" # not needed because acpi already adds zeros
+      
+# vvv keeping in case i come across some error vvv
+# WE HAVE TO ASSUME SOMETHING SO LETS ASSUME 2:22
+#      TIME=142
+#      HOUR=2
+#      MINS=22
     __color_time ${TIME}
     __color_life ${LIFE}
     case ${1} in
