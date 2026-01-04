@@ -31,6 +31,10 @@
 # vermaden [AT] interia [DOT] pl
 # https://vermaden.wordpress.com
 
+# modified by ant (alinxviso) to be usable on linux systems
+# taken from https://github.com/vermaden/scripts
+# hosted at https://github.com/alinxviso/scripts
+
 # SETTINGS
 COLOR_WHITE=#ffffff
 COLOR_ORANGE=#ffaa00
@@ -78,8 +82,10 @@ case ${1} in
   (*)           __usage ;;
 esac
 
-BATS=$( sysctl -n hw.acpi.battery.units )
-LIFE=$( sysctl -n hw.acpi.battery.life )
+#BATS=$( sysctl -n hw.acpi.battery.units )
+#LIFE=$( sysctl -n hw.acpi.battery.life )
+BATS=$( ls -l /sys/class/power_supply/ | grep "BAT" | rev | cut -d '/' -f1 | rev )
+LIFE=$( acpi | awk '/Discharging/{print int($4)}' )
 case $( sysctl -n hw.acpi.acline ) in
   (1)
     __color_life ${LIFE}
