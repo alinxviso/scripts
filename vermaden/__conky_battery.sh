@@ -83,9 +83,9 @@ case ${1} in
 esac
 
 
-case $( acpi | grep "Charging" ) in
-  (Charging) # will debug later
-        LIFE=$(acpi | awk '/Charging/{print ($4)}' ) 
+case $( acpi | grep -o "Charging" ) in
+  (Charging)
+        LIFE=$(acpi | awk '/Charging/{print int($4)}' ) 
         __color_life ${LIFE}
     case ${1} in
       (conky) echo "AC/\${color ${COLOR_LIFE}}${LIFE}%\${color}" ;;
