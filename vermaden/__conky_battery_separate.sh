@@ -86,8 +86,8 @@ esac
 #LIFE=$( sysctl -n hw.acpi.battery.life )
 BATS=$( ls -l /sys/class/power_supply/ | grep "BAT" | rev | cut -d '/' -f1 | rev )
 LIFE=$( acpi | awk '/Discharging/{print int($4)}' )
-case $( sysctl -n hw.acpi.acline ) in
-  (1)
+case $( acpi | grep -o "Charging" ) in
+  (Charging)
     __color_life ${LIFE}
     case ${BATS} in
       (1)
@@ -121,7 +121,7 @@ case $( sysctl -n hw.acpi.acline ) in
         ;;
     esac
     ;;
-  (0)
+  (*)
     TIME=$( sysctl -n hw.acpi.battery.time )
     if [ "${TIME}" != "-1" ]
     then
