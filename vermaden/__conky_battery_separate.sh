@@ -82,8 +82,6 @@ case ${1} in
   (*)           __usage ;;
 esac
 
-#BATS=$( sysctl -n hw.acpi.battery.units )
-#LIFE=$( sysctl -n hw.acpi.battery.life )
 BATS=$(command ls --color=never -l /sys/class/power_supply/ | grep "BAT" | rev | cut -d '/' -f1 | rev )
 case $( acpi | grep -o "Charging" ) in
   (Charging)
@@ -98,7 +96,7 @@ case $( acpi | grep -o "Charging" ) in
         ;;
       (*)
         LIFE=$( acpi | awk '/Discharging/{print int($4)}' )
-        BAT0STATE=$( acpi | grep "Battery 0" | grep -o "Not charging" )
+        BAT0STATE=$( acpi | grep "Battery 0" | grep -eo "Not charging" -oe "Discharging" -oe "Charging")
         BAT0DETECTED=$( acpi | grep -o "Battery 0" || echo "gone" )
 	if [ "${BAT0DETECTED}" = "gone" ]
 	then
@@ -106,7 +104,7 @@ case $( acpi | grep -o "Charging" ) in
 	else
 		BAT0=$( acpi | awk '/^Battery 0/{print int($4)}' )
         fi
-        BAT1STATE=$( acpi | grep "Battery 1" | grep -o "Not charging" )
+        BAT1STATE=$( acpi | grep "Battery 1" | grep -eo "Not charging" -oe "Discharging" -oe "Charging")
         BAT1DETECTED=$( acpi | grep -o "Battery 1" || echo "gone" )
 	if [ "${BAT1DETECTED}" = "gone" ]
         then
@@ -125,18 +123,24 @@ case $( acpi | grep -o "Charging" ) in
     esac
     ;;
   (*)
-    TIME=$( acpi | awk '/remaining/{print $5}' ) # current format assumes one large minute sum
-    if [ "${TIME}" != "-1" ]
-    then
-      HOUR=$(( ${TIME} / 60 ))
-      MINS=$(( ${TIME} % 60 ))
-      [ ${MINS} -lt 10 ] && MINS="0${MINS}"
-    else
-      # WE HAVE TO ASSUME SOMETHING SO LETS ASSUME 2:22
-      TIME=0
-      HOUR=0
-      MINS=0
-    fi
+	TIME=$( acpi | awk '/remaining/{print $5}' ) 
+	HOUR=$(echo "$TIME" | cut -b 1,2)
+	MINS=$(echo "$TIME" | cut -b 4,5)
+	TIME=$(( ${MINS} + ( ${HOUR} * 60 )))
+
+# old format assumes one large minute sum, keeping just in case
+#    if [ "${TIME}" != "-1" ]
+#    then
+#      HOUR=$(( ${TIME} / 60 ))
+#      MINS=$(( ${TIME} % 60 ))
+#      [ ${MINS} -lt 10 ] && MINS="0${MINS}"
+#    else
+#      # WE HAVE TO ASSUME SOMETHING SO LETS ASSUME 2:22
+#      TIME=0
+#      HOUR=0
+#      MINS=0
+#    fi
+
     __color_time ${TIME}
     __color_life ${LIFE}
     case ${BATS} in
@@ -145,20 +149,32 @@ case $( acpi | grep -o "Charging" ) in
           (conky) echo "\${color ${COLOR_TIME}}${HOUR}:${MINS}\${color}/${LIFE}%" ;;
           (dzen2) echo "^fg(${COLOR_TIME})${HOUR}:${MINS}^fg()/${LIFE}%"          ;;
         esac
-        ;;
+        ;;-oe "Discharging" -oe "Charging"
       (2)
-        BAT0STATE=$( acpiconf -i 0 | awk '/^State:/ {print $2}' )
-        if [ "${BAT0STATE}" != "not" ]
+        BAT0STATE=$( acpi | grep "Battery 0" | grep -eo "Not charging" -oe "Discharging" -oe "Charging")
+        BAT0DETECTED=$( acpi | grep -o "Battery 0" || echo "gone" )
+        if [ "${BAT0DETECTED}" != "gone" ]
         then
-          BAT0=$( acpiconf -i 0 | awk '/^Remaining capacity:/ {print $3}' )
+		case ${BAT0STATE} in
+			("Not charging")
+				BAT0=$( acpi | awk '/^Battery 0/{print int($5)}' );;
+			(*)
+				BAT0=$( acpi | awk '/^Battery 0/{print int($4)}' );;
+        	esac
         else
           BAT0="-"
         fi
-        BAT1STATE=$( acpiconf -i 1 | awk '/^State:/ {print $2}' )
-        if [ "${BAT1STATE}" != "not" ]
+        BAT1STATE=$( acpi | grep "Battery 1" | grep -oe "Not charging" -oe "Discharging" -oe "Charging" )
+        BAT1DETECTED=$( acpi | grep -o "Battery 1" || echo "gone" )
+        if [ "${BAT1DETECTED}" != "gone" ]
         then
-          BAT1=$( acpiconf -i 1 | awk '/^Remaining capacity:/ {print $3}' )
-        else
+		case ${BAT1STATE} in
+			("Not charging")
+				BAT1=$( acpi | awk '/^Battery 1/{print int($5)}' );;
+			(*)
+				BAT1=$( acpi | awk '/^Battery 1/{print int($4)}' );;
+        	esac
+	else
           BAT1="-"
         fi
         case ${1} in
