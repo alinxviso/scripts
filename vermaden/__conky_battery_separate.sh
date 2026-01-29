@@ -90,7 +90,7 @@ case $( acpi | grep -o "Charging" ) in
     LIFE=$( acpi | awk '/Charging/{print int($4)}' )
     __color_life ${LIFE}
     case ${BATS} in
-      (1)
+      ("BAT0")
         case ${1} in
           (conky) echo "AC/\${color ${COLOR_LIFE}}${LIFE}%\${color}" ;;
           (dzen2) echo "AC/^fg(${COLOR_LIFE})${LIFE}%" ;;
@@ -98,19 +98,21 @@ case $( acpi | grep -o "Charging" ) in
         ;;
       (*)
         LIFE=$( acpi | awk '/Discharging/{print int($4)}' )
-        BAT0STATE=$( acpi | awk "Battery 0" | grep -q | "Not charging" )
-	if [ "$(${BAT0STATE})" ]
+        BAT0STATE=$( acpi | grep "Battery 0" | grep -o "Not charging" )
+        BAT0DETECTED=$( acpi | grep -o "Battery 0" || echo "gone" )
+	if [ "${BAT0DETECTED}" = "gone" ]
 	then
 		BAT0="-"
 	else
-		BAT0=$( acpi | awk '/^Battery 0/{print int($5)}' )
+		BAT0=$( acpi | awk '/^Battery 0/{print int($4)}' )
         fi
-        BAT1STATE=$( acpi | awk "Battery 1" | grep -q | "Not charging" )
-	if [ "$(${BAT1STATE})" ]
+        BAT1STATE=$( acpi | grep "Battery 1" | grep -o "Not charging" )
+        BAT1DETECTED=$( acpi | grep -o "Battery 1" || echo "gone" )
+	if [ "${BAT1DETECTED}" = "gone" ]
         then
-          BAT1="-"
+		BAT1="-"
         else
-          BAT1=$( acpiconf -i 1 | awk '/^Remaining capacity:/ {print $3}' )
+		BAT1=$( acpi | awk '/^Battery 1/{print int($4)}' )
         fi
         case ${1} in
           (conky) echo "AC/${BAT0}/${BAT1}" ;;
