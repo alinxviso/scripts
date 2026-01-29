@@ -98,7 +98,7 @@ __math() {
 #            done | sed 's/.$//g' )
   FS=$(      df -h / | tail -n 1 | awk '{print int($3)}')
 #  FS=$(      zfs list -H -d 0 -o name,avail | awk '{printf("%s/%s ",$1,$2)}' ) # still works for zfs on linux so it's here as an option
-  BAT=$(     ~/.scripts/vermaden/__conky_battery_separate.sh dzen2 )
+  BAT=$(     ~/.scripts/vermaden/__conky_battery.sh dzen2 )
   TOP=$(     echo "${PS}" | bsdgrep -v -E '(COMMAND|idle)$' | sort -r -n \
                | head -3 | awk '{printf("%s/%d%%/%.1fGB ",$3,$1,$2/1024/1024)}' )
   MUSIC=$(   deadbeef --nowplaying "%f" 2> /dev/null | sed -E -e 's.^nothing$.N/A.g' )
@@ -112,7 +112,7 @@ echo -n "${CDE}| ${CLA}dns:"   "${CVA}${IF_DNS} "
 echo -n "${CDE}| ${CLA}ping:"  "${CVA}${IF_PING} "
 #echo -n "${CDE}| ${CLA}xfer:"  "${CVA}${IF_XFER} "
 echo -n "${CDE}| ${CLA}vol:"   "${CVA}${VOL} "
-echo -n "${CDE}| ${CLA}fs:"    "${CVA}${FS}"        # NO SPACE AT THE END
+echo -n "${CDE}| ${CLA}fs:"    "${CVA}${FS} "       
 echo -n "${CDE}| ${CLA}bat:"   "${CVA}${BAT} "
 echo -n "${CDE}| ${CLA}top:"   "${CVA}${TOP}"       # NO SPACE AT THE END
 echo -n "${CDE}| ${CLA}music:" "${CVA}${MUSIC}"

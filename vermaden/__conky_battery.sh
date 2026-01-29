@@ -41,28 +41,28 @@ COLOR_ORANGE=#ffaa00
 COLOR_RED=#dd2200
 
 __color_time() { # 1=TIME
-  local TIME=${1}
-  if [ ${TIME} -ge 90 ]
+  local TIME="${1}"
+  if [ "${TIME}" -ge 90 ]
   then
     COLOR_TIME=${COLOR_WHITE}
-  elif [ ${TIME} -lt 90 -a ${TIME} -ge 30 ]
+  elif [ "${TIME}" -lt 90 -a "${TIME}" -ge 30 ]
   then
     COLOR_TIME=${COLOR_ORANGE}
-  elif  [ ${TIME} -lt 30 ]
+  elif  [ "${TIME}" -lt 30 ]
   then
     COLOR_TIME=${COLOR_RED}
   fi
 }
 
 __color_life() { # 1=LIFE
-  local LIFE=${1}
-  if [ ${LIFE} -ge 50 ]
+  local LIFE="${1}"
+  if [ "${LIFE}" -ge 50 ]
   then
     COLOR_LIFE=${COLOR_WHITE}
-  elif [ ${LIFE} -lt 50 -a ${LIFE} -ge 25 ]
+  elif [ "${LIFE}" -lt 50 -a "${LIFE}" -ge 25 ]
   then
     COLOR_LIFE=${COLOR_ORANGE}
-  elif  [ ${LIFE} -lt 25 ]
+  elif  [ "${LIFE}" -lt 25 ]
   then
     COLOR_LIFE=${COLOR_RED}
   fi
@@ -86,7 +86,7 @@ esac
 case $( acpi | grep -o "Charging" ) in
   (Charging)
         LIFE=$(acpi | awk '/Charging/{print int($4)}' ) 
-        __color_life ${LIFE}
+        __color_life "${LIFE}"
     case ${1} in
       (conky) echo "AC/\${color ${COLOR_LIFE}}${LIFE}%\${color}" ;;
       (dzen2) echo "AC/^fg(${COLOR_LIFE})${LIFE}%" ;;
@@ -109,7 +109,7 @@ case $( acpi | grep -o "Charging" ) in
 #      HOUR=2
 #      MINS=22
     __color_time ${TIME}
-    __color_life ${LIFE}
+    __color_life "${LIFE}"
     case ${1} in
       (conky) echo "\${color ${COLOR_TIME}}${HOUR}:${MINS}\${color}/${LIFE}%" ;;
       (dzen2) echo "^fg(${COLOR_TIME})${HOUR}:${MINS}^fg()/${LIFE}%"          ;;

@@ -84,10 +84,10 @@ esac
 
 #BATS=$( sysctl -n hw.acpi.battery.units )
 #LIFE=$( sysctl -n hw.acpi.battery.life )
-BATS=$( ls -l /sys/class/power_supply/ | grep "BAT" | rev | cut -d '/' -f1 | rev )
-LIFE=$( acpi | awk '/Discharging/{print int($4)}' )
+BATS=$(command ls --color=never -l /sys/class/power_supply/ | grep "BAT" | rev | cut -d '/' -f1 | rev )
 case $( acpi | grep -o "Charging" ) in
   (Charging)
+    LIFE=$( acpi | awk '/Charging/{print int($4)}' )
     __color_life ${LIFE}
     case ${BATS} in
       (1)
@@ -96,20 +96,21 @@ case $( acpi | grep -o "Charging" ) in
           (dzen2) echo "AC/^fg(${COLOR_LIFE})${LIFE}%" ;;
         esac
         ;;
-      (2)
-        BAT0STATE=$( acpiconf -i 0 | awk '/^State:/ {print $2}' )
-        if [ "${BAT0STATE}" != "not" ]
-        then
-          BAT0=$( acpiconf -i 0 | awk '/^Remaining capacity:/ {print $3}' )
-        else
-          BAT0="-"
+      (*)
+        LIFE=$( acpi | awk '/Discharging/{print int($4)}' )
+        BAT0STATE=$( acpi | awk "Battery 0" | grep -q | "Not charging" )
+	if [ "$(${BAT0STATE})" ]
+	then
+		BAT0="-"
+	else
+		BAT0=$( acpi | awk '/^Battery 0/{print int($5)}' )
         fi
-        BAT1STATE=$( acpiconf -i 1 | awk '/^State:/ {print $2}' )
-        if [ "${BAT1STATE}" != "not" ]
+        BAT1STATE=$( acpi | awk "Battery 1" | grep -q | "Not charging" )
+	if [ "$(${BAT1STATE})" ]
         then
-          BAT1=$( acpiconf -i 1 | awk '/^Remaining capacity:/ {print $3}' )
-        else
           BAT1="-"
+        else
+          BAT1=$( acpiconf -i 1 | awk '/^Remaining capacity:/ {print $3}' )
         fi
         case ${1} in
           (conky) echo "AC/${BAT0}/${BAT1}" ;;

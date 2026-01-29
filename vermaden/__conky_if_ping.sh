@@ -49,6 +49,15 @@ __usage() {
   URL=96.47.72.84
   TTL=50
 
+  if [ $(~/.scripts/vermaden/__conky_if_ip.sh | grep -q "LAUSD") ]; then
+	  case ${1} in
+	    (conky) printf "%s" "\${color ${COLOR}}UNKNOWN\${color}" ;;
+	    (dzen2) echo "^fg(RED)UNKNOWN" ;;
+	  esac
+	  exit
+  fi
+
+
 # TYPE
 case ${1} in
   (conky|dzen2) :       ;;
