@@ -36,6 +36,7 @@
 # hosted at https://github.com/alinxviso/scripts
 
 # SETTINGS
+printf 1
 COLOR_WHITE=#ffffff
 COLOR_ORANGE=#ffaa00
 COLOR_RED=#dd2200
@@ -75,16 +76,19 @@ __usage() {
   echo
   exit 1
 }
+printf 2
 
 # TYPE
 case ${1} in
   (conky|dzen2) :       ;;
   (*)           __usage ;;
 esac
+printf 3
 
 BATS=$(command ls --color=never -l /sys/class/power_supply/ | grep "BAT" | rev | cut -d '/' -f1 | rev )
-case $( acpi | grep -o "Charging" ) in
+case $( acpi | grep -e "Charging" -e "Discharging" -e "Not charging" -o ) in
   (Charging)
+	  printf 4
     LIFE=$( acpi | awk '/Charging/{print int($4)}' )
     __color_life ${LIFE}
     case ${BATS} in
@@ -96,7 +100,7 @@ case $( acpi | grep -o "Charging" ) in
         ;;
       (*)
         LIFE=$( acpi | awk '/Discharging/{print int($4)}' )
-        BAT0STATE=$( acpi | grep "Battery 0" | grep -eo "Not charging" -oe "Discharging" -oe "Charging")
+        BAT0STATE=$( acpi | grep "Battery 0" | grep -e "Not charging" -e "Discharging" -e "Charging" -o)
         BAT0DETECTED=$( acpi | grep -o "Battery 0" || echo "gone" )
 	if [ "${BAT0DETECTED}" = "gone" ]
 	then
@@ -104,7 +108,7 @@ case $( acpi | grep -o "Charging" ) in
 	else
 		BAT0=$( acpi | awk '/^Battery 0/{print int($4)}' )
         fi
-        BAT1STATE=$( acpi | grep "Battery 1" | grep -eo "Not charging" -oe "Discharging" -oe "Charging")
+        BAT1STATE=$( acpi | grep "Battery 1" | grep -e "Not charging" -e "Discharging" -e "Charging" -o)
         BAT1DETECTED=$( acpi | grep -o "Battery 1" || echo "gone" )
 	if [ "${BAT1DETECTED}" = "gone" ]
         then
@@ -123,6 +127,7 @@ case $( acpi | grep -o "Charging" ) in
     esac
     ;;
   (*)
+	  printf 5
 	TIME=$( acpi | awk '/remaining/{print $5}' ) 
 	HOUR=$(echo "$TIME" | cut -b 1,2)
 	MINS=$(echo "$TIME" | cut -b 4,5)
@@ -142,16 +147,16 @@ case $( acpi | grep -o "Charging" ) in
 #    fi
 
     __color_time ${TIME}
-    __color_life ${LIFE}
     case ${BATS} in
-      (1)
+      (BAT0)
+	      printf 6
         case ${1} in
           (conky) echo "\${color ${COLOR_TIME}}${HOUR}:${MINS}\${color}/${LIFE}%" ;;
           (dzen2) echo "^fg(${COLOR_TIME})${HOUR}:${MINS}^fg()/${LIFE}%"          ;;
         esac
-        ;;-oe "Discharging" -oe "Charging"
-      (2)
-        BAT0STATE=$( acpi | grep "Battery 0" | grep -eo "Not charging" -oe "Discharging" -oe "Charging")
+      (BAT0\nBAT1)
+      printf 6.1
+        BAT0STATE=$( acpi | grep "Battery 0" | grep -e "Not charging" -e "Discharging" -e "Charging" -o)
         BAT0DETECTED=$( acpi | grep -o "Battery 0" || echo "gone" )
         if [ "${BAT0DETECTED}" != "gone" ]
         then
@@ -164,7 +169,7 @@ case $( acpi | grep -o "Charging" ) in
         else
           BAT0="-"
         fi
-        BAT1STATE=$( acpi | grep "Battery 1" | grep -oe "Not charging" -oe "Discharging" -oe "Charging" )
+        BAT1STATE=$( acpi | grep "Battery 1" | grep -e "Not charging" -e "Discharging" -e "Charging" -o )
         BAT1DETECTED=$( acpi | grep -o "Battery 1" || echo "gone" )
         if [ "${BAT1DETECTED}" != "gone" ]
         then
@@ -177,6 +182,10 @@ case $( acpi | grep -o "Charging" ) in
 	else
           BAT1="-"
         fi
+	echo ${BAT1} ${BAT0}
+	LIFE=$((${BAT1} + ${BAT0} ))
+	echo ${LIFE}
+    __color_life ${LIFE}
         case ${1} in
           (conky) echo "\${color ${COLOR_TIME}}${HOUR}:${MINS}\${color}/${BAT0}/${BAT1}" ;;
           (dzen2) echo "^fg(${COLOR_TIME})${HOUR}:${MINS}^fg()/${BAT0}/${BAT1}"          ;;
