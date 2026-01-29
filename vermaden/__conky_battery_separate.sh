@@ -125,7 +125,7 @@ case $( acpi | grep -o "Charging" ) in
     esac
     ;;
   (*)
-    TIME=$( sysctl -n hw.acpi.battery.time )
+    TIME=$( acpi | awk '/remaining/{print $5}' ) # current format assumes one large minute sum
     if [ "${TIME}" != "-1" ]
     then
       HOUR=$(( ${TIME} / 60 ))
