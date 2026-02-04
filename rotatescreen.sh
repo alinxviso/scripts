@@ -1,5 +1,14 @@
 #!/bin/sh
 
+if [ -z "$1" ];then
+	echo "USAGE: $(basename $0) <DISPLAY>
+	This script rotates your screen, <DISPLAY>, clockwise according to its current orientation
+	To figure out what <DISPLAY> should be, run 'xrandr --query' to see the list of active displays
+	and pick the one you want to rotate."
+	exit
+fi
+
+
 if [ -e /usr/bin/xrandr ];then
 __DISPLAY=$1
 __MODE=$(xrandr --query | awk -F "${__DISPLAY}" '{print $2}' | cut -d ' ' -f4 | sed -z 's/\n//g')
