@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 if [ -e /sbin/ip ]; then
-	echo
+	printf
 else
 	echo 'command ip not found, please install iproute2 or a package that provides ip'
 	echo 'if the ifconfig binary is installed, use ipaddr-ifconfig instead'
@@ -18,4 +18,4 @@ if [ -z "$__dev" ]; then
 	done
 fi 2> /dev/null
 
-echo "$__dev/$(ip -4 ad show "$__dev" | awk -F ' *|:' '/inet/{sub(/\/.*/,"",$3);print $3}' | head -n 1)"
+printf "$__dev/$(ip -4 ad show "$__dev" | awk -F ' *|:' '/inet/{sub(/\/.*/,"",$3);print $3}' | head -n 1)"

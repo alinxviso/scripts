@@ -10,27 +10,27 @@ bat1stat=$(cat /sys/class/power_supply/BAT1/status)
 if [ -e "/sys/class/power_supply/BAT1"  ]; then
 
 	if [ "$bat1stat" = "Discharging"  ];then
-		echo "bat1:"
+		printf "bat1:"
 
 	elif [ "$bat0stat" = "Discharging"  ];then
-		echo "bat0:"
+		printf "bat0:"
 
 	elif [ "$bat1stat" = "Charging"  ];then
-		echo "AC/bat1:"
+		printf "AC/bat1:"
 
 	elif [ "$bat0stat" = "Charging"  ];then
-		echo "AC/bat0:"
+		printf "AC/bat0:"
 	
 	elif { [ "$bat1stat" = "Not charging" ] || [ "$bat1stat"  =  "Full" ]; } && { [ "$bat0stat" = "Not charging" ] || [ "$bat0stat" = "Full" ]; } ;then
-		echo "AC/bat:"
+		printf "AC/bat:"
 	fi
 elif [ "$(cat /sys/class/power_supply/BAT0/status)" = "Discharging"  ];then
-	echo "bat0:"
+	printf `"bat0:"
 
 elif [ "$(cat /sys/class/power_supply/BAT0/status)" = "Charging"  ];then
-	echo "AC/bat0:"
+	printf "AC/bat0:"
 	
 elif [ "$(cat /sys/class/power_supply/BAT0/status)" = "Not charging" ];then
-	echo "AC/bat0:"
+	printf "AC/bat0:"
 fi
 

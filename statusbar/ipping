@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 if ping -c 1 -s 0 -q google.com 1>/dev/null 2>/dev/null
 then
-	echo -n OK
+	printf -n OK
 else
-	echo NOPE
+	printf NOPE
 fi

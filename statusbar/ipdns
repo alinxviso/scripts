@@ -35,9 +35,9 @@
 NS=$( awk '/^nameserver/ {print $2; exit}' /etc/resolv.conf )
 if [ "${NS}" != "" ]
 then
-  echo -n ${NS}
+  printf ${NS}
 else
-  echo -n -
+  printf -
 fi
 
 #echo '1' >> ~/scripts/stats/$( basename ${0} )
