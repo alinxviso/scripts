@@ -67,7 +67,7 @@ function powermenu {
 }
 powermenu && exit
 
-notify-send "did nothing show up?" "make sure XDG_SESSION_TYPE is set to either 'x11' or 'wayland', or that dmenu has the center patch applied. see script for more details" || echo "did nothing show up? make sure XDG_SESSION_TYPE is set to either 'x11' or 'wayland', or that dmenu has the center patch applied. see script for more details. By default the script uses bemenu for wayland and dmenu for x11"
+notify-send "did nothing show up?" "make sure XDG_SESSION_TYPE is set to either 'x11' or 'wayland', or that dmenu has the center patch applied. see script for more details. could also be caused by no swap for hibernate" -u critical || echo "did nothing show up? make sure XDG_SESSION_TYPE is set to either 'x11' or 'wayland', or that dmenu has the center patch applied. see script for more details. By default the script uses bemenu for wayland and dmenu for x11. could also be caused by no swap for hibernate"
 
 
 #########################################################################################

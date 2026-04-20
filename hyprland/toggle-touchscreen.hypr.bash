@@ -4,7 +4,7 @@ export STATUS_FILE="$XDG_RUNTIME_DIR/touchscreen.status"
 
 disable_touchscreen() {
 	printf "disabled" > "$STATUS_FILE"
-	notify-send "Touchscreen disabled" -h string:x-canonical-private-synchronous:toggle-touchscreen-hypr --expire-time=2000
+	notify-send "Touchscreen disabled" -h string:x-canonical-private-synchronous:toggle-touchscreen-hypr --expire-time=2000 -e
 	hyprctl keyword "\$TOUCH_ENABLED" false
 	hyprctl keyword device[elan-touchscreen] ''
 }
@@ -12,7 +12,7 @@ disable_touchscreen() {
 if [ -e "$STATUS_FILE" ]; then
 	enable_touchscreen() {
 		printf "enabled" > "$STATUS_FILE"
-		notify-send "Touchscreen enabled" -h string:x-canonical-private-synchronous:toggle-touchscreen-hypr --expire-time=2000
+		notify-send "Touchscreen enabled" -h string:x-canonical-private-synchronous:toggle-touchscreen-hypr --expire-time=2000 -e
 		hyprctl keyword "\$TOUCH_ENABLED" true 
 		hyprctl keyword device[elan-touchscreen] ''
 	}
