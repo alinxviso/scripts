@@ -1,0 +1,2 @@
+#!/bin/sh
+echo -n "bright:$(brightnessctl -m | cut -f4 -d,)"
