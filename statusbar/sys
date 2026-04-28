@@ -8,7 +8,12 @@ case $1 in
 		TEMP="$(sensors k10temp-pci-00c3 | awk '/Tctl/{print int($2)}')";;
 	* ) TEMP="argument is not correct! please set to either coretemp or k10temp depending on your cpu"
 esac
+
 LDAVG="$(cat /proc/loadavg | awk '{print ($2)}')"
 MEM="$(~/.scripts/statusbar/memoryused)"
 
-printf "$FREQ"MHz/"$TEMP"°C/"$LDAVG"/"$MEM"
+if [ "$2" = "newline" ]; then
+	echo -n -e "$FREQ"MHz"\n""$TEMP"°C"\n""$LDAVG""\n""$MEM"
+else
+	echo -n "$FREQ"MHz/"$TEMP"°C/"$LDAVG"/"$MEM"
+fi
