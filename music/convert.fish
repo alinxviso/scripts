@@ -1,4 +1,4 @@
-#!/usr/bin/fish
+#!/usr/bin/env fish
 
 if [ -z "$argv" ] || [ "$argv[1..-1]" = "-h" ]
 	echo "usage: $(basename (status -f)) file/dir filetype alac/aac [-R]
@@ -46,7 +46,6 @@ end
 # $argv[1] $argv[2] $argv[3] $argv[4]
 # file/dir filetype alac/aac [-R]
 
-set threads 0
 set filetype $argv[2]
 set newcodec $argv[3]
 
@@ -70,10 +69,13 @@ if [ -d "$argv[1]" ] # is a directory
 
 	if [ "$argv[4]" = "-R" ] # if searching recursively
 		set collection "$argv[1]"
-		for album in (command ls -d "$collection"/* | cut -f 8) # for each folder in the collection, find each song and convert. outputs to converted/{album input}/{filename}.m4a
-			mkdir converted/(basename "$collection")/(basename "$album")
-			for file in (command ls "$album" | cut -f 8 | grep "$filetype") # for each song in the album
-				ffmpeg -threads 0 -n -i "$album"/"$file" -b:a "$bitrate"K -c:v copy -c:a "$newcodec" converted/(basename "$collection")/(basename "$album")/(echo $file | sed s,."$filetype",.m4a,g) # convert it and output to converted/$filename
+		for album in (command ls -d "$collection"/* | rev | cut -d'/' -f-2 | rev) # for each folder in the collection, find each song and convert. outputs to converted/{album input}/{filename}.m4a
+			mkdir converted/"$album" # expands to converted/collection/album
+			for file in (command ls "$album" | cut -d'	' -f2- | grep "$filetype") # for each song in the album
+				ffmpeg -threads 0 -n -i "$album"/"$file" \ # use automatic number of threads, don't overwrite existing files, and choose input file
+				-b:a "$bitrate"K \ # audio bitrate
+				-c:v copy \ # keep video stream aka same cover art
+				-c:a "$newcodec" converted/"$album"/(echo $file | string replace -r ".$filetype\$" ".m4a") # convert it and output to converted/$filename
 				echo album = "$album"
 				echo file = "$file"
 				echo newcodec = "$newcodec"
@@ -83,21 +85,20 @@ if [ -d "$argv[1]" ] # is a directory
 	else
 		set album $argv[1]
 
-		for file in (command ls "$album" | cut -f 8 | grep "$filetype") # for each song in the album
-			ffmpeg -n -i "$album"/"$file" -b:a "$bitrate"K -c:v copy -c:a "$newcodec" -threads "$threads" converted/(basename "$album")/(echo $file | sed s,."$filetype",.m4a,g) # convert it and output to converted/$filename
+		for file in (command ls "$album" | cut -d'	' -f2- | grep "$filetype") # for each song in the album
+			ffmpeg -n -i "$album"/"$file" \
+			-b:a "$bitrate"K \
+			-c:v copy \
+			-c:a "$newcodec" \
+			-threads 0 \
+			converted/(basename "$album")/(echo $file | string replace -r ".$filetype\$" ".m4a") # convert it and output to converted/$filename
 			echo album = "$album"
 			echo file = "$file"
 			echo newcodec = "$newcodec"
 		end		
 	end
 
-
-
-
-
-
-
 else # if the input is a file
 	set song $argv[1]
-	ffmpeg -n -i "$song" -b:a "$bitrate"K -c:v copy -c:a "$newcodec" -threads "$threads" (echo (basename $argv[1]) | sed s,."$filetype",.m4a,g)
+	ffmpeg -n -i "$song" -b:a "$bitrate"K -c:v copy -c:a "$newcodec" -threads 0 (echo (basename $argv[1]) | string replace -r ".$filetype\$" ".m4a")
 end
