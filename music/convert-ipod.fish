@@ -6,15 +6,13 @@ set bitrate 320K
 
 if [ -z "$argv" ] || [ "$argv[1..-1]" = "-h" ]
 	echo "usage: $(basename (status -f)) file/dir [-R]
-	converts any applicable flac file to alac m4a
+	converts any applicable flac file to aac m4a and resizes
+	all cover art to 320x320
 
 	-R enables recursive searching for directories,
 	required if the directory does not contain files
 	directly
 	
-	filetype is what the file currently is, it must be the 
-	whole extension, without leading period
-
 	will not overwrite files
 	
 	bitrate is set to $bitrate
