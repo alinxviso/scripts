@@ -66,7 +66,12 @@ if [ -d "$argv[1]" ] # is a directory
 		set album $argv[1]
 
 		for file in (command ls "$album" | cut -d'	' -f2- | grep "$filetype") # for each song in the album
-			ffmpeg -n -i "$album"/"$file" -b:a "$bitrate"K -c:v copy -c:a "$newcodec" -threads "$threads" converted/(basename "$album")/(echo $file | string replace -r ".$filetype\$" ".m4a") # convert it and output to converted/$filename
+			ffmpeg -n -i "$album"/"$file" \
+			-b:a "$bitrate" \
+			-c:v copy \
+			-c:a "$newcodec" \
+			-threads 0 \
+			converted/(basename "$album")/(echo $file | string replace -r ".$filetype\$" ".m4a") # convert it and output to converted/$filename
 			echo album = "$album"
 			echo file = "$file"
 			echo newcodec = "$newcodec"
@@ -81,5 +86,5 @@ if [ -d "$argv[1]" ] # is a directory
 
 else # if the input is a file
 	set song $argv[1]
-	ffmpeg -n -i "$song" -b:a "$bitrate"K -c:v copy -c:a "$newcodec" -threads "$threads" (echo (basename $argv[1]) | string replace -r".$filetype\$"'.m4a')
+	ffmpeg -n -i "$song" -b:a "$bitrate" -c:v copy -c:a "$newcodec" -threads 0 (echo (basename $argv[1]) | string replace -r".$filetype\$"'.m4a')
 end
