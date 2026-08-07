@@ -12,8 +12,14 @@ esac
 LDAVG="$(cat /proc/loadavg | awk '{print ($2)}')"
 MEM="$(~/.scripts/statusbar/memoryused)"
 
-if [ "$2" = "newline" ]; then
-	echo -n -e "$FREQ"MHz"\n""$TEMP"°C"\n""$LDAVG""\n""$MEM"
-else
-	echo -n "$FREQ"MHz/"$TEMP"°C/"$LDAVG"/"$MEM"
-fi
+	
+case $2 in
+	"newline" )
+		echo -n -e "$FREQ"MHz"\n""$TEMP"°C"\n""$LDAVG""\n""$MEM";;
+	"json" )
+		export __sys="$FREQ"MHz"\n""$TEMP"°C"\n""$LDAVG""\n""$MEM"
+		echo '{"text": "'$__sys'", "tooltip": "uh hi", "class": "sys" }';;
+	* )
+		echo -n "$FREQ"MHz/"$TEMP"°C/"$LDAVG"/"$MEM"
+esac
+
