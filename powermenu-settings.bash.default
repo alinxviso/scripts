@@ -15,7 +15,7 @@ no="exit"
 case $currentwm in
 	bspwm )         exitcurrentwm="bspc quit" ;;
 	dwm )           exitcurrentwm="pkill dwm && pkill xinit" ;;
-	hyprland )      exitcurrentwm="hyprctl dispatch exit" ;;
+	hyprland )      exitcurrentwm="hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'" ;;
 	i3 )            exitcurrentwm="i3-msg exit" ;;
 	openbox )       exitcurrentwm="openbox --exit" ;;
 	qtile )         exitcurrentwm="qtile cmd-obj -o cmd -f shutdown" ;;
