@@ -71,7 +71,7 @@ if [ -d "$argv[1]" ] # is a directory
 		set collection "$argv[1]"
 		for album in (command ls -d "$collection"/* | rev | cut -d'/' -f-2 | rev) # for each folder in the collection, find each song and convert. outputs to converted/{album input}/{filename}.m4a
 			mkdir converted/"$album" # expands to converted/collection/album
-			for file in (command ls "$album" | cut -d'	' -f2- | grep "$filetype") # for each song in the album
+			for file in (command ls "$album" | cut -f2- | grep "$filetype") # for each song in the album
 				ffmpeg -threads 0 -n -i "$album"/"$file" \ # use automatic number of threads, don't overwrite existing files, and choose input file
 				-b:a "$bitrate"K \ # audio bitrate
 				-c:v copy \ # keep video stream aka same cover art
@@ -85,7 +85,7 @@ if [ -d "$argv[1]" ] # is a directory
 	else
 		set album $argv[1]
 
-		for file in (command ls "$album" | cut -d'	' -f2- | grep "$filetype") # for each song in the album
+		for file in (command ls "$album" | cut -f2- | grep "$filetype") # for each song in the album
 			ffmpeg -n -i "$album"/"$file" \
 			-b:a "$bitrate"K \
 			-c:v copy \
