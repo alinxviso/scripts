@@ -22,11 +22,11 @@ if test (count $argv) -eq 0; or test "$argv[1..-1]" = "-h"
 	exit 0
 end
 
-if not test -e "$argv[1]" 
-else
-	echo "file or directory $argv[1] does not exist!"
-	exit
-end
+#if not test -e "$argv[1]" 
+#else
+#	echo "file or directory $argv[1] does not exist!"
+#	exit
+#end
 
 
 if test -d "$argv[1]"  # is a directory
